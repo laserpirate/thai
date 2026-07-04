@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#14121F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Flashcards">
+<title>Travel Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Noto+Sans+Thai:wght@600;800&family=Noto+Sans+JP:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14121F;          /* deep indigo night */
+    --card: #201C33;        /* card surface */
+    --card-back: #26203D;
+    --edge: #3A3159;
+    --gold: #FFC64D;        /* marigold gold — Thai script */
+    --pink: #FF5CA8;        /* neon pink — accents */
+    --mint: #5CE8B5;        /* success */
+    --text: #F7F2E7;        /* warm bright off-white */
+    --dim: #A99FC7;
+    --radius: 22px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Archivo', -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow: hidden;
+    touch-action: manipulation;
+  }
+  .thai { font-family: 'Noto Sans Thai', sans-serif; }
+  .jp   { font-family: 'Noto Sans JP', sans-serif; }
+
+  /* ---------- header ---------- */
+  header {
+    padding: 14px 16px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .deck-title {
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .deck-title span { color: var(--gold); }
+  .icon-btns { display: flex; gap: 8px; }
+  .icon-btn {
+    background: var(--card);
+    border: 2px solid var(--edge);
+    color: var(--text);
+    font-size: 1.15rem;
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: grid; place-items: center;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .icon-btn:active { transform: scale(0.93); }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: 0 0 auto;
+    background: var(--card);
+    border: 2px solid var(--edge);
+    color: var(--dim);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 9px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .chip.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #1A1500;
+  }
+
+  /* ---------- progress ---------- */
+  .progress-wrap { padding: 0 16px; }
+  .progress-bar {
+    height: 8px;
+    background: var(--card);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--pink), var(--gold));
+    border-radius: 99px;
+    transition: width 0.35s ease;
+  }
+  .progress-label {
+    margin-top: 7px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dim);
+    display: flex;
+    justify-content: space-between;
+  }
+  .progress-label b { color: var(--text); }
+
+  /* ---------- card ---------- */
+  main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    perspective: 1200px;
+    min-height: 0;
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    height: 100%;
+    max-height: 480px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.45s cubic-bezier(0.3, 0.9, 0.4, 1);
+    cursor: pointer;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--radius);
+    border: 2px solid var(--edge);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 26px 20px;
+    gap: 14px;
+    overflow: hidden;
+  }
+  .face.front { background: var(--card); }
+  .face.back  {
+    background: var(--card-back);
+    transform: rotateY(180deg);
+    border-color: var(--pink);
+  }
+  .face-tag {
+    position: absolute;
+    top: 16px;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .script {
+    color: var(--gold);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 3.6rem);
+    line-height: 1.25;
+    word-break: keep-all;
+  }
+  .roman {
+    font-weight: 900;
+    font-size: clamp(1.5rem, 7vw, 2.1rem);
+    line-height: 1.2;
+  }
+  .phon {
+    color: var(--pink);
+    font-weight: 700;
+    font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+    letter-spacing: 0.03em;
+  }
+  .phon::before { content: "🔊 "; font-size: 0.9em; }
+  .english {
+    font-weight: 900;
+    font-size: clamp(1.9rem, 8.5vw, 2.7rem);
+    line-height: 1.2;
+  }
+  .hint {
+    position: absolute;
+    bottom: 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dim);
+  }
+
+  /* ---------- controls ---------- */
+  footer {
+    padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 12px;
+  }
+  .ctl {
+    flex: 1;
+    border: none;
+    border-radius: 18px;
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 1.15rem;
+    padding: 18px 8px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .ctl:active { transform: scale(0.96); }
+  .ctl.again { background: var(--card); color: var(--pink); border: 2px solid var(--pink); }
+  .ctl.got   { background: var(--mint); color: #032216; }
+
+  /* ---------- done screen ---------- */
+  .done {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+  }
+  .done h2 { font-size: 2rem; font-weight: 900; }
+  .done .script { font-size: 2.6rem; }
+  .done p { color: var(--dim); font-weight: 700; font-size: 1.05rem; }
+  .ctl.restart { background: var(--gold); color: #1A1500; padding: 18px 34px; flex: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+    .progress-fill { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top-row">
+    <div class="deck-title" id="deckTitle">Thai <span>Travel</span></div>
+    <div class="icon-btns">
+      <button class="icon-btn" id="dirBtn" title="Swap front/back">⇄</button>
+      <button class="icon-btn" id="shuffleBtn" title="Shuffle">🔀</button>
+    </div>
+  </div>
+  <div class="chips" id="deckChips"></div>
+  <div class="chips" id="filterChips">
+    <button class="chip active" data-filter="all">All</button>
+    <button class="chip" data-filter="word">Words</button>
+    <button class="chip" data-filter="phrase">Phrases</button>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label">
+    <span><b id="learnedCount">0</b> learned</span>
+    <span><b id="remainCount">0</b> to go</span>
+  </div>
+</div>
+
+<main>
+  <div class="card" id="card">
+    <div class="face front" id="faceFront">
+      <div class="face-tag" id="frontTag">Thai</div>
+      <div class="script thai" id="cScript"></div>
+      <div class="roman" id="cRoman"></div>
+      <div class="phon" id="cPhon"></div>
+      <div class="hint">tap to flip</div>
+    </div>
+    <div class="face back">
+      <div class="face-tag" id="backTag">English</div>
+      <div class="english" id="cEnglish"></div>
+      <div class="hint">tap to flip back</div>
+    </div>
+  </div>
+
+  <div class="done" id="doneScreen">
+    <div class="script thai">เก่งมาก!</div>
+    <h2>Deck complete</h2>
+    <p>geng mak — very good!<br>Every card marked as learned.</p>
+    <button class="ctl restart" id="restartBtn">Start over</button>
+  </div>
+</main>
+
+<footer id="controls">
+  <button class="ctl again" id="againBtn">↻ Again</button>
+  <button class="ctl got" id="gotBtn">✓ Got it</button>
+</footer>
+
+<script>
+/* ============================================================
+   ADDING YOUR OWN CARDS
+   Each card: { type: "word" | "phrase",
+                en:     "English",
+                roman:  "anglicized spelling",
+                script: "native script",
+                phon:   "spelled-out pronunciation" }
+   Add cards to a deck's list below, or add a whole new deck
+   (e.g. japanese) following the same shape.
+   ============================================================ */
+const DECKS = {
+  thai: {
+    label: "Thai Travel",
+    tag: "Thai",
+    fontClass: "thai",
+    doneWord: "เก่งมาก!",
+    doneRoman: "geng mak — very good!",
+    cards: [
+      // ---- words ----
+      { type:"word", en:"Hello", roman:"sawatdee (krap/ka)", script:"สวัสดี", phon:"sah-wah-DEE (krap / kah)" },
+      { type:"word", en:"Thank you", roman:"khop khun", script:"ขอบคุณ", phon:"kop-KOON" },
+      { type:"word", en:"Yes", roman:"chai", script:"ใช่", phon:"CHY" },
+      { type:"word", en:"No", roman:"mai chai", script:"ไม่ใช่", phon:"my-CHY" },
+      { type:"word", en:"Bathroom / toilet", roman:"hong nam", script:"ห้องน้ำ", phon:"hong-NAHM" },
+      { type:"word", en:"Water", roman:"nam", script:"น้ำ", phon:"NAHM" },
+      { type:"word", en:"Food", roman:"ahan", script:"อาหาร", phon:"ah-HAHN" },
+      { type:"word", en:"Delicious", roman:"aroi", script:"อร่อย", phon:"ah-ROY" },
+      { type:"word", en:"Spicy", roman:"phet", script:"เผ็ด", phon:"PET" },
+      { type:"word", en:"Hotel", roman:"rong raem", script:"โรงแรม", phon:"rong-RAM" },
+      { type:"word", en:"Airport", roman:"sanam bin", script:"สนามบิน", phon:"sah-nahm-BIN" },
+      { type:"word", en:"Taxi", roman:"taeksi", script:"แท็กซี่", phon:"TAK-see" },
+      { type:"word", en:"Train", roman:"rot fai", script:"รถไฟ", phon:"rot-FY" },
+      { type:"word", en:"Bus", roman:"rot me", script:"รถเมล์", phon:"rot-MAY" },
+      { type:"word", en:"Market", roman:"talat", script:"ตลาด", phon:"tah-LAHT" },
+      { type:"word", en:"Beach", roman:"chai hat", script:"ชายหาด", phon:"chy-HAHT" },
+      { type:"word", en:"Money", roman:"ngoen", script:"เงิน", phon:"NGERN" },
+      { type:"word", en:"Expensive", roman:"phaeng", script:"แพง", phon:"PANG" },
+      { type:"word", en:"Cheap", roman:"thuk", script:"ถูก", phon:"TOOK" },
+      { type:"word", en:"Hospital", roman:"rong phayaban", script:"โรงพยาบาล", phon:"rong-pah-yah-BAHN" },
+      { type:"word", en:"Pharmacy", roman:"ran khai ya", script:"ร้านขายยา", phon:"rahn-ky-YAH" },
+      { type:"word", en:"Police", roman:"tamruat", script:"ตำรวจ", phon:"tam-RUAT" },
+      { type:"word", en:"Left", roman:"sai", script:"ซ้าย", phon:"SY" },
+      { type:"word", en:"Right", roman:"khwa", script:"ขวา", phon:"KWAH" },
+      { type:"word", en:"Straight ahead", roman:"trong pai", script:"ตรงไป", phon:"trong-PY" },
+      { type:"word", en:"Stop", roman:"yut", script:"หยุด", phon:"YOOT" },
+      { type:"word", en:"Today", roman:"wan nee", script:"วันนี้", phon:"wahn-NEE" },
+      { type:"word", en:"Tomorrow", roman:"phrung nee", script:"พรุ่งนี้", phon:"proong-NEE" },
+      { type:"word", en:"Hot (temperature)", roman:"ron", script:"ร้อน", phon:"RAWN" },
+      { type:"word", en:"Cold", roman:"yen", script:"เย็น", phon:"YEN" },
+      // ---- phrases ----
+      { type:"phrase", en:"Where's the bathroom?", roman:"hong nam yu thi nai?", script:"ห้องน้ำอยู่ที่ไหน", phon:"hong-NAHM yoo tee-NY" },
+      { type:"phrase", en:"How much?", roman:"thao rai?", script:"เท่าไหร่", phon:"tao-RY" },
+      { type:"phrase", en:"I don't understand", roman:"mai khao jai", script:"ไม่เข้าใจ", phon:"my kow-JY" },
+      { type:"phrase", en:"Do you speak English?", roman:"phut phasa angkrit dai mai?", script:"พูดภาษาอังกฤษได้ไหม", phon:"POOT pah-SAH ang-KRIT dy-MY" },
+      { type:"phrase", en:"Excuse me / sorry", roman:"khor thot", script:"ขอโทษ", phon:"kor-TOTE" },
+      { type:"phrase", en:"Can you help me?", roman:"chuay dai mai?", script:"ช่วยได้ไหม", phon:"CHUAY dy-MY" },
+      { type:"phrase", en:"Not spicy, please", roman:"mai phet", script:"ไม่เผ็ด", phon:"my-PET" },
+      { type:"phrase", en:"It's delicious!", roman:"aroi mak!", script:"อร่อยมาก", phon:"ah-ROY MAHK" },
+      { type:"phrase", en:"Check, please", roman:"check bin", script:"เช็คบิล", phon:"chek-BIN" },
+      { type:"phrase", en:"I don't want it", roman:"mai ao", script:"ไม่เอา", phon:"my-OW" },
+      { type:"phrase", en:"Water, please", roman:"khor nam", script:"ขอน้ำ", phon:"kor-NAHM" },
+      { type:"phrase", en:"One more, please", roman:"khor ik neung", script:"ขออีกหนึ่ง", phon:"kor EEK NEUNG" },
+      { type:"phrase", en:"I'm lost", roman:"chan long thang", script:"ฉันหลงทาง", phon:"chahn long-TAHNG" },
+      { type:"phrase", en:"Go to the airport, please", roman:"pai sanam bin", script:"ไปสนามบิน", phon:"py sah-nahm-BIN" },
+      { type:"phrase", en:"Where is …?", roman:"… yu thi nai?", script:"…อยู่ที่ไหน", phon:"... yoo tee-NY" },
+      { type:"phrase", en:"Nice to meet you", roman:"yindi thi dai ruujak", script:"ยินดีที่ได้รู้จัก", phon:"yin-DEE tee dy ROO-jahk" },
+      { type:"phrase", en:"No problem / it's okay", roman:"mai pen rai", script:"ไม่เป็นไร", phon:"my pen RY" },
+      { type:"phrase", en:"See you later", roman:"laeo joe kan", script:"แล้วเจอกัน", phon:"lao jer-GAHN" }
+    ]
+  }
+  /* Add Japanese here later, e.g.
+  ,japanese: {
+    label: "Japanese Travel",
+    tag: "Japanese",
+    fontClass: "jp",
+    doneWord: "よくできました!",
+    doneRoman: "yoku dekimashita — well done!",
+    cards: [
+      { type:"word", en:"Hello", roman:"konnichiwa", script:"こんにちは", phon:"kon-nee-chee-WAH" }
+    ]
+  }
+  */
+};
+
+/* ---------------- state ---------------- */
+let deckKey = Object.keys(DECKS)[0];
+let filter = "all";
+let queue = [];          // indices still to learn
+let learned = 0;
+let total = 0;
+let reversed = false;    // false: Thai front / English back
+
+const $ = id => document.getElementById(id);
+const card = $("card");
+
+function activeCards() {
+  const d = DECKS[deckKey];
+  return d.cards.filter(c => filter === "all" || c.type === filter);
+}
+
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startSession() {
+  const cards = activeCards();
+  total = cards.length;
+  learned = 0;
+  queue = shuffle(cards.map((_, i) => i));
+  $("doneScreen").style.display = "none";
+  card.style.display = "";
+  $("controls").style.visibility = "visible";
+  showCurrent(false);
+  updateProgress();
+}
+
+function showCurrent(animate = true) {
+  card.classList.remove("flipped");
+  const cards = activeCards();
+  const c = cards[queue[0]];
+  if (!c) return;
+  const d = DECKS[deckKey];
+  const scriptEl = $("cScript");
+  scriptEl.className = "script " + d.fontClass;
+
+  if (!reversed) {
+    $("frontTag").textContent = d.tag;
+    $("backTag").textContent = "English";
+    scriptEl.textContent = c.script;
+    $("cRoman").textContent = c.roman;
+    $("cPhon").textContent = c.phon;
+    $("cEnglish").textContent = c.en;
+  } else {
+    $("frontTag").textContent = "English";
+    $("backTag").textContent = d.tag;
+    scriptEl.textContent = "";
+    $("cRoman").textContent = c.en;
+    $("cPhon").textContent = "";
+    $("cEnglish").innerHTML =
+      '<span class="script ' + d.fontClass + '" style="display:block;font-size:0.95em;color:var(--gold)">' +
+      c.script + '</span>' + c.roman + '<div class="phon" style="margin-top:10px">' + c.phon + '</div>';
+  }
+}
+
+function updateProgress() {
+  $("learnedCount").textContent = learned;
+  $("remainCount").textContent = queue.length;
+  $("progressFill").style.width = total ? (learned / total * 100) + "%" : "0%";
+}
+
+function finishDeck() {
+  const d = DECKS[deckKey];
+  card.style.display = "none";
+  $("controls").style.visibility = "hidden";
+  const done = $("doneScreen");
+  done.querySelector(".script").textContent = d.doneWord;
+  done.querySelector(".script").className = "script " + d.fontClass;
+  done.querySelector("p").innerHTML = d.doneRoman + "<br>Every card marked as learned.";
+  done.style.display = "flex";
+}
+
+/* ---------------- events ---------------- */
+card.addEventListener("click", () => card.classList.toggle("flipped"));
+
+$("gotBtn").addEventListener("click", () => {
+  if (!queue.length) return;
+  queue.shift();
+  learned++;
+  updateProgress();
+  queue.length ? showCurrent() : finishDeck();
+});
+
+$("againBtn").addEventListener("click", () => {
+  if (queue.length < 2) { showCurrent(); return; }
+  queue.push(queue.shift());   // send to back of the line
+  showCurrent();
+});
+
+$("shuffleBtn").addEventListener("click", () => { shuffle(queue); showCurrent(); });
+$("restartBtn").addEventListener("click", startSession);
+$("dirBtn").addEventListener("click", () => { reversed = !reversed; showCurrent(); });
+
+document.querySelectorAll("#filterChips .chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll("#filterChips .chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    filter = chip.dataset.filter;
+    startSession();
+  });
+});
+
+function buildDeckChips() {
+  const wrap = $("deckChips");
+  wrap.innerHTML = "";
+  const keys = Object.keys(DECKS);
+  if (keys.length < 2) { wrap.style.display = "none"; return; }
+  wrap.style.display = "";
+  keys.forEach(k => {
+    const b = document.createElement("button");
+    b.className = "chip" + (k === deckKey ? " active" : "");
+    b.textContent = DECKS[k].label;
+    b.addEventListener("click", () => {
+      deckKey = k;
+      const parts = DECKS[k].label.split(" ");
+      $("deckTitle").innerHTML = parts[0] + ' <span>' + parts.slice(1).join(" ") + '</span>';
+      buildDeckChips();
+      startSession();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+buildDeckChips();
+startSession();
+</script>
+</body>
+</html>
