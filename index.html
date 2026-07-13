@@ -6,22 +6,22 @@
 <meta name="theme-color" content="#14121F">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Flashcards">
-<title>Travel Flashcards</title>
+<meta name="apple-mobile-web-app-title" content="LEARN Thai">
+<title>LEARN Thai — Travel Flashcards</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Noto+Sans+Thai:wght@600;800&family=Noto+Sans+JP:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Noto+Sans+Thai:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #14121F;          /* deep indigo night */
-    --card: #201C33;        /* card surface */
+    --bg: #14121F;
+    --card: #201C33;
     --card-back: #26203D;
     --edge: #3A3159;
-    --gold: #FFC64D;        /* marigold gold — Thai script */
-    --pink: #FF5CA8;        /* neon pink — accents */
-    --mint: #5CE8B5;        /* success */
-    --text: #F7F2E7;        /* warm bright off-white */
-    --dim: #A99FC7;
+    --gold: #FFC64D;
+    --pink: #FF5CA8;
+    --mint: #5CE8B5;
+    --text: #F7F2E7;
+    --dim: #B5ABD6;
     --radius: 22px;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -33,83 +33,139 @@
     display: flex;
     flex-direction: column;
     min-height: 100dvh;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
     touch-action: manipulation;
   }
   .thai { font-family: 'Noto Sans Thai', sans-serif; }
-  .jp   { font-family: 'Noto Sans JP', sans-serif; }
 
-  /* ---------- header ---------- */
-  header {
-    padding: 14px 16px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  /* ================= HOME ================= */
+  #home {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 22px 16px calc(30px + env(safe-area-inset-bottom));
   }
-  .top-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .deck-title {
+  .brand {
     font-weight: 900;
-    font-size: 1.25rem;
-    letter-spacing: 0.02em;
+    font-size: 2.1rem;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
   }
-  .deck-title span { color: var(--gold); }
-  .icon-btns { display: flex; gap: 8px; }
+  .brand span { color: var(--gold); }
+  .brand-sub { color: var(--pink); font-weight: 700; font-size: 1.05rem; margin-top: 4px; }
+  .brand-thai { color: var(--dim); font-weight: 600; font-size: 1rem; margin-top: 2px; }
+  .home-stat {
+    margin: 16px 0 8px;
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: 18px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+  .home-stat b { color: var(--gold); font-size: 1.3rem; }
+  .section-label {
+    margin: 20px 4px 10px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .tile-all {
+    width: 100%;
+    background: linear-gradient(135deg, #2A2344, #201C33);
+    border: 2px solid var(--gold);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: inherit;
+    text-align: left;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+  }
+  .tile-all .t-emoji { font-size: 1.9rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tile {
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: inherit;
+    text-align: left;
+    padding: 16px 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 112px;
+  }
+  .tile:active, .tile-all:active { transform: scale(0.97); }
+  .t-emoji { font-size: 1.7rem; line-height: 1; }
+  .t-name { font-weight: 900; font-size: 1.02rem; line-height: 1.15; }
+  .t-count { font-weight: 700; font-size: 0.85rem; color: var(--dim); margin-top: auto; }
+  .t-count b { color: var(--mint); }
+  .tile.done-tile { border-color: var(--mint); }
+  .row-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: 16px;
+    padding: 16px 15px;
+    margin-bottom: 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-align: left;
+    cursor: pointer;
+    line-height: 1.2;
+  }
+  .row-btn:active { transform: scale(0.98); }
+  .row-btn .r-emoji { font-size: 1.5rem; }
+  .row-btn .r-count { margin-left: auto; color: var(--dim); font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
+  .row-btn .r-sub { display: block; color: var(--dim); font-weight: 700; font-size: 0.88rem; margin-top: 3px; }
+  .row-btn.gold-row { border-color: var(--gold); }
+
+  /* ================= STUDY ================= */
+  #study { display: none; flex-direction: column; flex: 1; min-height: 0; }
+  header { padding: 14px 16px 10px; display: flex; align-items: center; gap: 12px; }
   .icon-btn {
     background: var(--card);
     border: 2px solid var(--edge);
     color: var(--text);
     font-size: 1.15rem;
-    width: 44px; height: 44px;
+    min-width: 44px; height: 44px;
     border-radius: 14px;
     display: grid; place-items: center;
     cursor: pointer;
     font-family: inherit;
+    font-weight: 900;
   }
   .icon-btn:active { transform: scale(0.93); }
+  .deck-title {
+    font-weight: 900;
+    font-size: 1.12rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    flex: 1;
+  }
+  .deck-title span { color: var(--gold); }
 
-  .chips {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .chips::-webkit-scrollbar { display: none; }
-  .chip {
-    flex: 0 0 auto;
-    background: var(--card);
-    border: 2px solid var(--edge);
-    color: var(--dim);
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 9px 16px;
-    border-radius: 999px;
-    cursor: pointer;
-  }
-  .chip.active {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #1A1500;
-  }
-
-  /* ---------- progress ---------- */
   .progress-wrap { padding: 0 16px; }
-  .progress-bar {
-    height: 8px;
-    background: var(--card);
-    border-radius: 99px;
-    overflow: hidden;
-  }
+  .progress-bar { height: 8px; background: var(--card); border-radius: 99px; overflow: hidden; }
   .progress-fill {
-    height: 100%;
-    width: 0%;
+    height: 100%; width: 0%;
     background: linear-gradient(90deg, var(--pink), var(--gold));
     border-radius: 99px;
     transition: width 0.35s ease;
@@ -119,12 +175,10 @@
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--dim);
-    display: flex;
-    justify-content: space-between;
+    display: flex; justify-content: space-between;
   }
   .progress-label b { color: var(--text); }
 
-  /* ---------- card ---------- */
   main {
     flex: 1;
     display: flex;
@@ -135,10 +189,8 @@
     min-height: 0;
   }
   .card {
-    width: 100%;
-    max-width: 420px;
-    height: 100%;
-    max-height: 480px;
+    width: 100%; max-width: 420px;
+    height: 100%; max-height: 480px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.45s cubic-bezier(0.3, 0.9, 0.4, 1);
@@ -146,73 +198,98 @@
   }
   .card.flipped { transform: rotateY(180deg); }
   .face {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: var(--radius);
     border: 2px solid var(--edge);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
     text-align: center;
-    padding: 26px 20px;
-    gap: 14px;
+    padding: 30px 20px;
+    gap: 13px;
     overflow: hidden;
   }
   .face.front { background: var(--card); }
-  .face.back  {
-    background: var(--card-back);
-    transform: rotateY(180deg);
-    border-color: var(--pink);
-  }
+  .face.back { background: var(--card-back); transform: rotateY(180deg); border-color: var(--pink); }
   .face-tag {
-    position: absolute;
-    top: 16px;
-    font-size: 0.78rem;
-    font-weight: 900;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    position: absolute; top: 16px;
+    font-size: 0.78rem; font-weight: 900;
+    letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--dim);
   }
   .script {
     color: var(--gold);
     font-weight: 800;
-    font-size: clamp(2.4rem, 11vw, 3.6rem);
-    line-height: 1.25;
-    word-break: keep-all;
+    font-size: clamp(2rem, 9.5vw, 3.2rem);
+    line-height: 1.3;
   }
   .roman {
     font-weight: 900;
-    font-size: clamp(1.5rem, 7vw, 2.1rem);
+    font-size: clamp(1.35rem, 6.2vw, 1.9rem);
     line-height: 1.2;
   }
   .phon {
     color: var(--pink);
     font-weight: 700;
-    font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+    font-size: clamp(1rem, 4.4vw, 1.25rem);
     letter-spacing: 0.03em;
   }
   .phon::before { content: "🔊 "; font-size: 0.9em; }
   .english {
     font-weight: 900;
-    font-size: clamp(1.9rem, 8.5vw, 2.7rem);
+    font-size: clamp(1.6rem, 7vw, 2.3rem);
     line-height: 1.2;
   }
-  .hint {
-    position: absolute;
-    bottom: 16px;
-    font-size: 0.85rem;
-    font-weight: 700;
+  .note {
     color: var(--dim);
+    font-weight: 700;
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
+    line-height: 1.35;
+    max-width: 92%;
+  }
+  .words {
+    color: var(--mint);
+    font-weight: 700;
+    font-size: clamp(1rem, 4.2vw, 1.15rem);
+    line-height: 1.4;
+    max-width: 94%;
+  }
+  .words:empty, .note:empty { display: none; }
+  .l-words { color: var(--mint); font-weight: 700; font-size: 1rem; margin-top: 5px; line-height: 1.4; }
+
+  /* scenario dialogue bubbles */
+  .bub {
+    border: 2px solid var(--edge);
+    border-radius: 18px;
+    padding: 14px 15px;
+    margin-bottom: 12px;
+    background: var(--card);
+  }
+  .bub.you { background: #2A2344; border-color: var(--gold); margin-left: 12%; }
+  .bub.them { margin-right: 12%; }
+  .b-who {
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 6px;
+  }
+  .bub.you .b-who { color: var(--gold); }
+  .b-script { font-family: 'Noto Sans Thai', sans-serif; color: var(--gold); font-weight: 800; font-size: 1.6rem; line-height: 1.35; }
+  .b-roman { font-weight: 900; font-size: 1.15rem; margin-top: 2px; }
+  .b-phon { color: var(--pink); font-weight: 700; font-size: 1.02rem; margin-top: 1px; }
+  .b-en { font-weight: 700; font-size: 1.08rem; margin-top: 5px; }
+  .b-words { color: var(--mint); font-weight: 700; font-size: 0.98rem; margin-top: 4px; line-height: 1.4; }
+  .hint {
+    position: absolute; bottom: 14px;
+    font-size: 0.85rem; font-weight: 700; color: var(--dim);
   }
 
-  /* ---------- controls ---------- */
   footer {
     padding: 8px 16px calc(16px + env(safe-area-inset-bottom));
-    display: flex;
-    gap: 12px;
+    display: flex; gap: 12px;
   }
   .ctl {
     flex: 1;
@@ -227,20 +304,74 @@
   }
   .ctl:active { transform: scale(0.96); }
   .ctl.again { background: var(--card); color: var(--pink); border: 2px solid var(--pink); }
-  .ctl.got   { background: var(--mint); color: #032216; }
+  .ctl.got { background: var(--mint); color: #032216; }
 
-  /* ---------- done screen ---------- */
-  .done {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 18px;
-    text-align: center;
-  }
-  .done h2 { font-size: 2rem; font-weight: 900; }
-  .done .script { font-size: 2.6rem; }
+  .done { display: none; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+  .done .script { font-size: 2.5rem; }
+  .done h2 { font-size: 1.9rem; font-weight: 900; }
   .done p { color: var(--dim); font-weight: 700; font-size: 1.05rem; }
   .ctl.restart { background: var(--gold); color: #1A1500; padding: 18px 34px; flex: 0; }
+
+  /* ================= LIST VIEW ================= */
+  #list {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px calc(30px + env(safe-area-inset-bottom));
+  }
+  .list-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg);
+    padding: 14px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .lrow {
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .l-script { font-family: 'Noto Sans Thai', sans-serif; color: var(--gold); font-weight: 800; font-size: 1.65rem; line-height: 1.35; }
+  .l-roman { font-weight: 900; font-size: 1.18rem; margin-top: 2px; }
+  .l-phon { color: var(--pink); font-weight: 700; font-size: 1.05rem; margin-top: 1px; }
+  .l-en { font-weight: 700; font-size: 1.1rem; margin-top: 5px; }
+  .l-note { color: var(--dim); font-weight: 600; font-size: 0.95rem; margin-top: 4px; line-height: 1.35; }
+  .lsec {
+    margin: 24px 4px 8px;
+    font-size: 0.84rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--pink);
+  }
+  .lsub { color: var(--dim); font-weight: 700; font-size: 0.92rem; line-height: 1.4; margin: 0 4px 10px; }
+  .numbox {
+    background: var(--card);
+    border: 2px solid var(--edge);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .numline {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--edge);
+    font-weight: 700;
+    font-size: 1.08rem;
+  }
+  .numline:last-child { border-bottom: none; }
+  .n-a { min-width: 56px; font-weight: 900; color: var(--text); }
+  .n-d { min-width: 60px; color: var(--mint); font-family: 'Noto Sans Thai', sans-serif; font-weight: 800; }
+  .n-t { flex: 1; color: var(--gold); font-family: 'Noto Sans Thai', sans-serif; font-weight: 800; }
+  .n-r { color: var(--pink); text-align: right; font-size: 1rem; max-width: 46%; }
 
   @media (prefers-reduced-motion: reduce) {
     .card { transition: none; }
@@ -250,160 +381,539 @@
 </head>
 <body>
 
-<header>
-  <div class="top-row">
-    <div class="deck-title" id="deckTitle">Thai <span>Travel</span></div>
-    <div class="icon-btns">
-      <button class="icon-btn" id="dirBtn" title="Swap front/back">⇄</button>
-      <button class="icon-btn" id="shuffleBtn" title="Shuffle">🔀</button>
-    </div>
-  </div>
-  <div class="chips" id="deckChips"></div>
-  <div class="chips" id="filterChips">
-    <button class="chip active" data-filter="all">All</button>
-    <button class="chip" data-filter="word">Words</button>
-    <button class="chip" data-filter="phrase">Phrases</button>
-  </div>
-</header>
+<!-- ================= HOME / NAVIGATION ================= -->
+<div id="home">
+  <div class="brand">Learn <span>Thai</span></div>
+  <div class="brand-sub">Travel Flashcards</div>
+  <div class="brand-thai thai">เรียนภาษาไทย · rian phasa thai</div>
 
-<div class="progress-wrap">
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-label">
-    <span><b id="learnedCount">0</b> learned</span>
-    <span><b id="remainCount">0</b> to go</span>
+  <div class="home-stat">
+    <span>Cards learned</span>
+    <b id="homeStat">0 / 0</b>
   </div>
+
+  <div class="section-label">🎴 Flashcards — drill</div>
+  <button class="tile-all" id="allTile">
+    <span class="t-emoji">🇹🇭</span>
+    <span>
+      <span class="t-name">All Cards</span><br>
+      <span class="t-count" id="allCount"></span>
+    </span>
+  </button>
+  <div style="height:12px"></div>
+  <div class="grid" id="catGrid"></div>
+
+  <div class="section-label">📖 Phrasebook — read</div>
+  <div id="bookList"></div>
+
+  <div class="section-label">🎬 Scenarios — role-play</div>
+  <div id="scenarioList"></div>
+
+  <div class="section-label">📋 Reference lists</div>
+  <div id="refList"></div>
 </div>
 
-<main>
-  <div class="card" id="card">
-    <div class="face front" id="faceFront">
-      <div class="face-tag" id="frontTag">Thai</div>
-      <div class="script thai" id="cScript"></div>
-      <div class="roman" id="cRoman"></div>
-      <div class="phon" id="cPhon"></div>
-      <div class="hint">tap to flip</div>
-    </div>
-    <div class="face back">
-      <div class="face-tag" id="backTag">English</div>
-      <div class="english" id="cEnglish"></div>
-      <div class="hint">tap to flip back</div>
+<!-- ================= STUDY VIEW ================= -->
+<div id="study">
+  <header>
+    <button class="icon-btn" id="backBtn">←</button>
+    <div class="deck-title" id="deckTitle"></div>
+    <button class="icon-btn" id="dirBtn" title="Swap front/back">⇄</button>
+    <button class="icon-btn" id="shuffleBtn" title="Shuffle">🔀</button>
+    <button class="icon-btn" id="listBtn" title="List view">☰</button>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label">
+      <span><b id="learnedCount">0</b> learned</span>
+      <span><b id="remainCount">0</b> to go</span>
     </div>
   </div>
 
-  <div class="done" id="doneScreen">
-    <div class="script thai">เก่งมาก!</div>
-    <h2>Deck complete</h2>
-    <p>geng mak — very good!<br>Every card marked as learned.</p>
-    <button class="ctl restart" id="restartBtn">Start over</button>
-  </div>
-</main>
+  <main>
+    <div class="card" id="card">
+      <div class="face front">
+        <div class="face-tag" id="frontTag">Thai</div>
+        <div class="script thai" id="cScript"></div>
+        <div class="roman" id="cRoman"></div>
+        <div class="phon" id="cPhon"></div>
+        <div class="hint">tap to flip</div>
+      </div>
+      <div class="face back">
+        <div class="face-tag" id="backTag">English</div>
+        <div class="english" id="cEnglish"></div>
+        <div class="words" id="cWords"></div>
+        <div class="note" id="cNote"></div>
+        <div class="hint">tap to flip back</div>
+      </div>
+    </div>
 
-<footer id="controls">
-  <button class="ctl again" id="againBtn">↻ Again</button>
-  <button class="ctl got" id="gotBtn">✓ Got it</button>
-</footer>
+    <div class="done" id="doneScreen">
+      <div class="script thai">เก่งมาก!</div>
+      <h2>Deck complete</h2>
+      <p>geng mak — very good!</p>
+      <button class="ctl restart" id="restartBtn">Study again</button>
+    </div>
+  </main>
+
+  <!-- Got it on the LEFT: this app is held left-handed. No rightie hegemony here. -->
+  <footer id="controls">
+    <button class="ctl got" id="gotBtn">✓ Got it</button>
+    <button class="ctl again" id="againBtn">↻ Again</button>
+  </footer>
+</div>
+
+<!-- ================= LIST VIEW ================= -->
+<div id="list">
+  <header class="list-head">
+    <button class="icon-btn" id="listBackBtn">←</button>
+    <div class="deck-title" id="listTitle"></div>
+  </header>
+  <div id="listContent"></div>
+</div>
 
 <script>
-/* ============================================================
-   ADDING YOUR OWN CARDS
-   Each card: { type: "word" | "phrase",
-                en:     "English",
-                roman:  "anglicized spelling",
-                script: "native script",
-                phon:   "spelled-out pronunciation" }
-   Add cards to a deck's list below, or add a whole new deck
-   (e.g. japanese) following the same shape.
-   ============================================================ */
-const DECKS = {
-  thai: {
-    label: "Thai Travel",
-    tag: "Thai",
-    fontClass: "thai",
-    doneWord: "เก่งมาก!",
-    doneRoman: "geng mak — very good!",
-    cards: [
-      // ---- words ----
-      { type:"word", en:"Hello", roman:"sawatdee (krap/ka)", script:"สวัสดี", phon:"sah-wah-DEE (krap / kah)" },
-      { type:"word", en:"Thank you", roman:"khop khun", script:"ขอบคุณ", phon:"kop-KOON" },
-      { type:"word", en:"Yes", roman:"chai", script:"ใช่", phon:"CHY" },
-      { type:"word", en:"No", roman:"mai chai", script:"ไม่ใช่", phon:"my-CHY" },
-      { type:"word", en:"Bathroom / toilet", roman:"hong nam", script:"ห้องน้ำ", phon:"hong-NAHM" },
-      { type:"word", en:"Water", roman:"nam", script:"น้ำ", phon:"NAHM" },
-      { type:"word", en:"Food", roman:"ahan", script:"อาหาร", phon:"ah-HAHN" },
-      { type:"word", en:"Delicious", roman:"aroi", script:"อร่อย", phon:"ah-ROY" },
-      { type:"word", en:"Spicy", roman:"phet", script:"เผ็ด", phon:"PET" },
-      { type:"word", en:"Hotel", roman:"rong raem", script:"โรงแรม", phon:"rong-RAM" },
-      { type:"word", en:"Airport", roman:"sanam bin", script:"สนามบิน", phon:"sah-nahm-BIN" },
-      { type:"word", en:"Taxi", roman:"taeksi", script:"แท็กซี่", phon:"TAK-see" },
-      { type:"word", en:"Train", roman:"rot fai", script:"รถไฟ", phon:"rot-FY" },
-      { type:"word", en:"Bus", roman:"rot me", script:"รถเมล์", phon:"rot-MAY" },
-      { type:"word", en:"Market", roman:"talat", script:"ตลาด", phon:"tah-LAHT" },
-      { type:"word", en:"Beach", roman:"chai hat", script:"ชายหาด", phon:"chy-HAHT" },
-      { type:"word", en:"Money", roman:"ngoen", script:"เงิน", phon:"NGERN" },
-      { type:"word", en:"Expensive", roman:"phaeng", script:"แพง", phon:"PANG" },
-      { type:"word", en:"Cheap", roman:"thuk", script:"ถูก", phon:"TOOK" },
-      { type:"word", en:"Hospital", roman:"rong phayaban", script:"โรงพยาบาล", phon:"rong-pah-yah-BAHN" },
-      { type:"word", en:"Pharmacy", roman:"ran khai ya", script:"ร้านขายยา", phon:"rahn-ky-YAH" },
-      { type:"word", en:"Police", roman:"tamruat", script:"ตำรวจ", phon:"tam-RUAT" },
-      { type:"word", en:"Left", roman:"sai", script:"ซ้าย", phon:"SY" },
-      { type:"word", en:"Right", roman:"khwa", script:"ขวา", phon:"KWAH" },
-      { type:"word", en:"Straight ahead", roman:"trong pai", script:"ตรงไป", phon:"trong-PY" },
-      { type:"word", en:"Stop", roman:"yut", script:"หยุด", phon:"YOOT" },
-      { type:"word", en:"Today", roman:"wan nee", script:"วันนี้", phon:"wahn-NEE" },
-      { type:"word", en:"Tomorrow", roman:"phrung nee", script:"พรุ่งนี้", phon:"proong-NEE" },
-      { type:"word", en:"Hot (temperature)", roman:"ron", script:"ร้อน", phon:"RAWN" },
-      { type:"word", en:"Cold", roman:"yen", script:"เย็น", phon:"YEN" },
-      // ---- phrases ----
-      { type:"phrase", en:"Where's the bathroom?", roman:"hong nam yu thi nai?", script:"ห้องน้ำอยู่ที่ไหน", phon:"hong-NAHM yoo tee-NY" },
-      { type:"phrase", en:"How much?", roman:"thao rai?", script:"เท่าไหร่", phon:"tao-RY" },
-      { type:"phrase", en:"I don't understand", roman:"mai khao jai", script:"ไม่เข้าใจ", phon:"my kow-JY" },
-      { type:"phrase", en:"Do you speak English?", roman:"phut phasa angkrit dai mai?", script:"พูดภาษาอังกฤษได้ไหม", phon:"POOT pah-SAH ang-KRIT dy-MY" },
-      { type:"phrase", en:"Excuse me / sorry", roman:"khor thot", script:"ขอโทษ", phon:"kor-TOTE" },
-      { type:"phrase", en:"Can you help me?", roman:"chuay dai mai?", script:"ช่วยได้ไหม", phon:"CHUAY dy-MY" },
-      { type:"phrase", en:"Not spicy, please", roman:"mai phet", script:"ไม่เผ็ด", phon:"my-PET" },
-      { type:"phrase", en:"It's delicious!", roman:"aroi mak!", script:"อร่อยมาก", phon:"ah-ROY MAHK" },
-      { type:"phrase", en:"Check, please", roman:"check bin", script:"เช็คบิล", phon:"chek-BIN" },
-      { type:"phrase", en:"I don't want it", roman:"mai ao", script:"ไม่เอา", phon:"my-OW" },
-      { type:"phrase", en:"Water, please", roman:"khor nam", script:"ขอน้ำ", phon:"kor-NAHM" },
-      { type:"phrase", en:"One more, please", roman:"khor ik neung", script:"ขออีกหนึ่ง", phon:"kor EEK NEUNG" },
-      { type:"phrase", en:"I'm lost", roman:"chan long thang", script:"ฉันหลงทาง", phon:"chahn long-TAHNG" },
-      { type:"phrase", en:"Go to the airport, please", roman:"pai sanam bin", script:"ไปสนามบิน", phon:"py sah-nahm-BIN" },
-      { type:"phrase", en:"Where is …?", roman:"… yu thi nai?", script:"…อยู่ที่ไหน", phon:"... yoo tee-NY" },
-      { type:"phrase", en:"Nice to meet you", roman:"yindi thi dai ruujak", script:"ยินดีที่ได้รู้จัก", phon:"yin-DEE tee dy ROO-jahk" },
-      { type:"phrase", en:"No problem / it's okay", roman:"mai pen rai", script:"ไม่เป็นไร", phon:"my pen RY" },
-      { type:"phrase", en:"See you later", roman:"laeo joe kan", script:"แล้วเจอกัน", phon:"lao jer-GAHN" }
-    ]
-  }
-  /* Add Japanese here later, e.g.
-  ,japanese: {
-    label: "Japanese Travel",
-    tag: "Japanese",
-    fontClass: "jp",
-    doneWord: "よくできました!",
-    doneRoman: "yoku dekimashita — well done!",
-    cards: [
-      { type:"word", en:"Hello", roman:"konnichiwa", script:"こんにちは", phon:"kon-nee-chee-WAH" }
-    ]
-  }
-  */
+/* =====================================================================
+   LEARN THAI — TRAVEL FLASHCARDS
+   ---------------------------------------------------------------------
+   ADDING CARDS: each card is one object:
+   { en:"English", roman:"anglicized", script:"ไทย", phon:"spelled-out",
+     cats:["basics","market"],          // one or more category keys
+     note:"optional context / vibe / warning shown on the English side" }
+
+   Categories overlap on purpose — redundancy is how it sticks.
+   ⚠ marks slang from the Gemini-translated YouTube docs: verify with locals.
+   ===================================================================== */
+
+const CATEGORIES = {
+  basics:    { name:"Basics",                 emoji:"🙏" },
+  numbers:   { name:"Numbers",                emoji:"🔢" },
+  learning:  { name:"Learning Thai",          emoji:"🧠" },
+  airport:   { name:"Airport & Immigration",  emoji:"🛬" },
+  money:     { name:"Money & Paying",         emoji:"💸" },
+  bargain:   { name:"Negotiating Price",      emoji:"🤝" },
+  time:      { name:"Time & Schedules",       emoji:"⏰" },
+  taxi:      { name:"Taxi & Scooter",         emoji:"🛵" },
+  cafe:      { name:"Cafe",                   emoji:"☕" },
+  market:    { name:"Market & Street Food",   emoji:"🍢" },
+  restaurant:{ name:"Restaurant",             emoji:"🍜" },
+  food:      { name:"Food & Drink",           emoji:"🥭" },
+  meeting:   { name:"Meeting People",         emoji:"👋" },
+  friends:   { name:"Friends & Compliments",  emoji:"😄" },
+  flirt:     { name:"Talking to Cute Girls",  emoji:"😍" },
+  nightlife: { name:"Nightlife & Party",      emoji:"🌃" },
+  slang:     { name:"Slang & Jokes",          emoji:"🤪" },
+  help:      { name:"Help & Emergency",       emoji:"🆘" },
+  sick:      { name:"Sick & Pharmacy",        emoji:"🤒" },
+  police:    { name:"Police & Authorities",   emoji:"👮" },
+  sorry:     { name:"Sorry & De-escalation",  emoji:"🕊️" },
+  sights:    { name:"Temples & Museums",      emoji:"🛕" },
+  nature:    { name:"Nature & Activities",    emoji:"🏝️" },
+  people:    { name:"People & Family",        emoji:"👪" }
 };
 
-/* ---------------- state ---------------- */
-let deckKey = Object.keys(DECKS)[0];
-let filter = "all";
-let queue = [];          // indices still to learn
-let learned = 0;
-let total = 0;
-let reversed = false;    // false: Thai front / English back
+const CARDS = [
+/* ---------------- BASICS ---------------- */
+{ en:"Hello", roman:"sawatdee (krap/ka)", script:"สวัสดี", phon:"sah-wah-DEE (krap / kah)", words:"sawat = goodness/blessing · dee = good", cats:["basics","meeting"], note:"Men end with krap, women with ka — on almost every sentence." },
+{ en:"Polite ending particle", roman:"krap / ka", script:"ครับ / ค่ะ", phon:"KRAP (men) / KAH (women)", words:"krap (men) / ka (women) — bolt onto the end of nearly every sentence", cats:["basics","police","meeting"], note:"The politeness engine of Thai. When in doubt, add it." },
+{ en:"Thank you", roman:"khop khun", script:"ขอบคุณ", phon:"kop-KOON", words:"khop = to thank · khun = you", cats:["basics","meeting","cafe","restaurant"] },
+{ en:"Yes / that's right", roman:"chai", script:"ใช่", phon:"CHY", words:"chai = yes / correct / it is so", cats:["basics"] },
+{ en:"No / not right", roman:"mai chai", script:"ไม่ใช่", phon:"my-CHY", words:"mai = not · chai = right → 'not right'", cats:["basics"] },
+{ en:"No problem / it's okay", roman:"mai pen rai", script:"ไม่เป็นไร", phon:"my pen RY", words:"mai = not · pen = to be · rai = anything → 'it is nothing'", cats:["basics","sorry","slang"], note:"The national motto. Also a graceful way to refuse: 'I'm good.'" },
+{ en:"Excuse me / sorry", roman:"khor thot", script:"ขอโทษ", phon:"kor-TOTE", words:"khor = ask for · thot = blame/punishment → 'I ask forgiveness'", cats:["basics","sorry","police"] },
+{ en:"What's that? / say that again?", roman:"arai na (krap)", script:"อะไรนะ", phon:"ah-RY NAH (krap)", words:"arai = what · na = softening particle", cats:["basics","learning"], note:"Your #1 tool for keeping a conversation alive." },
+{ en:"I don't understand", roman:"mai khao jai", script:"ไม่เข้าใจ", phon:"my kow-JY", words:"mai = not · khao = enter · jai = heart/mind → 'doesn't enter my heart'", cats:["basics","learning","police"] },
+{ en:"I don't know", roman:"mai roo", script:"ไม่รู้", phon:"my-ROO", words:"mai = not · roo = to know", cats:["basics","slang"] },
+{ en:"Can you speak English?", roman:"phut phasa angkrit dai mai?", script:"พูดภาษาอังกฤษได้ไหม", phon:"POOT pah-SAH ang-KRIT dy-MY", words:"phut = speak · phasa = language · angkrit = English · dai mai = can you?", cats:["basics","learning","police","help"] },
+{ en:"Where is the bathroom?", roman:"hong nam yoo tee nai?", script:"ห้องน้ำอยู่ที่ไหน", phon:"hong-NAHM yoo tee-NY", words:"hong = room · nam = water · yoo = is located · tee nai = where → 'water room is where?'", cats:["basics","restaurant","market"] },
+{ en:"How much?", roman:"tao rai?", script:"เท่าไหร่", phon:"tao-RY", words:"tao = amount · rai = how much/what", cats:["basics","money","bargain","market"] },
+{ en:"What is this?", roman:"nee kue arai?", script:"นี่คืออะไร", phon:"nee-KOO-ah-RY", words:"nee = this · kue = is · arai = what", cats:["basics","market","food"], note:"Marked 'Important!' in your phrasebook — the street-food superpower." },
+{ en:"Please give me... (+ noi)", roman:"khor ... noi (krap/ka)", script:"ขอ...หน่อย", phon:"KOR ... NOY", words:"khor = request · noi = a little (softens any ask)", cats:["basics","restaurant","cafe"], note:"Universal polite request pattern. khor nam noi = water please." },
+{ en:"Water, please", roman:"khor nam noi", script:"ขอน้ำหน่อย", phon:"kor-NAHM-noy", words:"khor = please give · nam = water · noi = softener", cats:["basics","restaurant","food"] },
+{ en:"Help!", roman:"chuay duay!", script:"ช่วยด้วย", phon:"CHUAY-DUAY!", words:"chuay = help · duay = with/also → 'help me!'", cats:["basics","help"] },
+{ en:"Have you eaten yet? (greeting)", roman:"gin khao yang?", script:"กินข้าวยัง", phon:"gin-KOW-yung", words:"gin = eat · khao = rice · yang = yet", cats:["basics","meeting","friends"], note:"A warm Thai hello — not literally about food." },
+{ en:"Where are you going? (greeting)", roman:"pai nai?", script:"ไปไหน", phon:"py-NY", words:"pai = go · nai = where", cats:["basics","meeting","friends"], note:"Casual greeting, like 'what's up' — no real answer needed." },
+{ en:"Anything is fine / whatever", roman:"arai gor dai", script:"อะไรก็ได้", phon:"ah-RY gor-DY", words:"arai = what(ever) · gor dai = is also fine", cats:["basics","slang","restaurant","friends"] },
+{ en:"Sure! / go ahead", roman:"dai loey", script:"ได้เลย", phon:"dy-LOEY", words:"dai = can · loey = totally / right away", cats:["basics","slang","friends"] },
+{ en:"Excuse me, can I get through?", roman:"khor thang noi", script:"ขอทางหน่อย", phon:"kor-TAHNG-noy", words:"khor = ask for · thang = way/path · noi = a little", cats:["basics","market","nightlife"], note:"Polite way to pass through a crowd." },
+{ en:"See you later", roman:"jer gun", script:"เจอกัน", phon:"jer-GUN", words:"jer = meet · gun = each other", cats:["basics","friends","meeting"] },
+{ en:"Take your time / at your leisure", roman:"tam sabai", script:"ตามสบาย", phon:"tahm-sah-BY", words:"tam = follow · sabai = comfortable → 'go as comfort takes you'", cats:["basics","slang","friends"] },
+{ en:"It's hot (ugh)", roman:"rorn a", script:"ร้อนอะ", phon:"RAWN-ah", words:"rorn = hot · a = casual groan particle", cats:["basics","slang","nature"], note:"Instant small talk anywhere in Thailand." },
 
+/* ---------------- NUMBERS ---------------- */
+{ en:"0 — zero", roman:"suun", script:"๐ · ศูนย์", phon:"SOON", cats:["numbers"] },
+{ en:"1 — one", roman:"neung", script:"๑ · หนึ่ง", phon:"NEUNG", cats:["numbers"] },
+{ en:"2 — two", roman:"saawng", script:"๒ · สอง", phon:"SAWNG", cats:["numbers"] },
+{ en:"3 — three", roman:"saam", script:"๓ · สาม", phon:"SAHM", cats:["numbers"] },
+{ en:"4 — four", roman:"sii", script:"๔ · สี่", phon:"SEE", cats:["numbers"] },
+{ en:"5 — five", roman:"haa", script:"๕ · ห้า", phon:"HAH", cats:["numbers"], note:"555 online = ha-ha-ha. Thai internet laughter." },
+{ en:"6 — six", roman:"hok", script:"๖ · หก", phon:"HOK", cats:["numbers"] },
+{ en:"7 — seven", roman:"jet", script:"๗ · เจ็ด", phon:"JET", cats:["numbers"] },
+{ en:"8 — eight", roman:"bpaet", script:"๘ · แปด", phon:"BPAT", cats:["numbers"] },
+{ en:"9 — nine", roman:"gao", script:"๙ · เก้า", phon:"GOW", cats:["numbers"], note:"Lucky number — sounds like 'progress' in Thai." },
+{ en:"10 — ten", roman:"sip", script:"๑๐ · สิบ", phon:"SIP", cats:["numbers"] },
+{ en:"20 — twenty", roman:"yii-sip", script:"๒๐ · ยี่สิบ", phon:"YEE-sip", cats:["numbers"], note:"Irregular! Not 'saawng-sip'. 30+ are regular: saam-sip, sii-sip..." },
+{ en:"100 — one hundred", roman:"neung roi", script:"๑๐๐ · หนึ่งร้อย", phon:"neung-ROY", cats:["numbers","money"] },
+{ en:"500 — five hundred", roman:"haa roi", script:"๕๐๐ · ห้าร้อย", phon:"hah-ROY", cats:["numbers","money","bargain"] },
+{ en:"1,000 — one thousand", roman:"neung phan", script:"๑๐๐๐ · หนึ่งพัน", phon:"neung-PAHN", cats:["numbers","money"] },
+{ en:"10,000 — ten thousand", roman:"meun", script:"๑๐๐๐๐ · หมื่น", phon:"MEUN", cats:["numbers","money"] },
+{ en:"Million", roman:"laan", script:"ล้าน", phon:"LAHN", cats:["numbers","money","slang"], note:"As in the movie: How to Make Millions Before Grandma Dies." },
+{ en:"13 (pattern: ten-three)", roman:"sip-saam", script:"๑๓ · สิบสาม", phon:"sip-SAHM", cats:["numbers"], note:"Teens = sip + digit. 23 = yii-sip-saam." },
+{ en:"555 — five hundred fifty-five", roman:"haa-roi haa-sip-haa", script:"๕๕๕", phon:"hah-ROY hah-sip-HAH", cats:["numbers"], note:"Build big numbers left to right, like English." },
+
+/* ---------------- LEARNING THAI ---------------- */
+{ en:"Sorry, I don't understand", roman:"khor thot, mai khao jai", script:"ขอโทษ ไม่เข้าใจ", phon:"kor-TOTE, my kow-JY", words:"khor thot = sorry · mai = not · khao jai = understand (enter-heart)", cats:["learning","basics"] },
+{ en:"Can you say that again?", roman:"phut eek tee dai mai?", script:"พูดอีกทีได้ไหม", phon:"POOT eek-TEE dy-MY", words:"phut = speak · eek tee = one more time · dai mai = can you?", cats:["learning","basics"] },
+{ en:"Can you speak slowly, please?", roman:"phut cha-cha noi dai mai?", script:"พูดช้าๆ หน่อยได้ไหม", phon:"POOT chah-CHAH noy dy-MY", words:"phut = speak · cha-cha = slowly-slowly · noi = please", cats:["learning","basics","taxi"] },
+{ en:"What does it mean in English?", roman:"phasa angkrit plae waa arai?", script:"ภาษาอังกฤษแปลว่าอะไร", phon:"pah-SAH ang-KRIT plah wah ah-RY", words:"phasa angkrit = English · plae = translate · waa arai = as what", cats:["learning"] },
+{ en:"How do you say that in Thai?", roman:"phasa thai phut waa yang-ngai?", script:"ภาษาไทยพูดว่ายังไง", phon:"pah-SAH TY poot wah yahng-NGY", words:"phasa thai = Thai · phut = say · waa = as · yang-ngai = how", cats:["learning"] },
+{ en:"Is this how you say it?", roman:"phut yang nee chai mai?", script:"พูดอย่างนี้ใช่ไหม", phon:"POOT yahng-NEE chy-MY", words:"phut = speak · yang nee = like this · chai mai = right?", cats:["learning"] },
+{ en:"How do you use this word?", roman:"kham nee chai yang-ngai?", script:"คำนี้ใช้ยังไง", phon:"kahm-NEE chy yahng-NGY", words:"kham = word · nee = this · chai = use · yang-ngai = how", cats:["learning"] },
+{ en:"Can you write that down for me?", roman:"khian hai noi dai mai?", script:"เขียนให้หน่อยได้ไหม", phon:"KEE-an hy noy dy-MY", words:"khian = write · hai = for (me) · noi = please · dai mai = can?", cats:["learning"] },
+{ en:"Please speak Thai with me a lot", roman:"chuay phut phasa thai gap phom yuh yuh na", script:"ช่วยพูดภาษาไทยกับผมเยอะๆ นะ", phon:"CHUAY poot pah-SAH TY gap POM yuh-YUH nah", words:"chuay = please/help · phut = speak · gap phom = with me · yuh yuh = lots · na = okay?", cats:["learning","friends","meeting"], note:"Say this and Thai friends will happily become your teachers." },
+{ en:"You speak Thai so well!", roman:"phut thai geng jang", script:"พูดไทยเก่งจัง", phon:"poot TY geng JANG", words:"phut = speak · geng = skilled · jang = so/really", cats:["learning","meeting","friends"], note:"You WILL hear this. Next cards = how to respond." },
+{ en:"Not at all / I'm not good yet", roman:"mai geng rork (krap/ka)", script:"ไม่เก่งหรอก", phon:"my GENG rork", words:"mai = not · geng = skilled · rork = at all (softener)", cats:["learning","meeting"], note:"The humble response Thais love." },
+{ en:"I still have a lot to learn", roman:"yang tong rian eek yuh", script:"ยังต้องเรียนอีกเยอะ", phon:"yahng tong REE-an eek YUH", words:"yang = still · tong = must · rian = learn · eek = more · yuh = a lot", cats:["learning","meeting"] },
+{ en:"I speak a little Thai", roman:"phut thai dai nit noi", script:"พูดไทยได้นิดหน่อย", phon:"poot TY dy nit-NOY", words:"phut = speak · dai = can · nit noi = a little bit", cats:["learning","meeting","basics"] },
+
+/* ---------------- AIRPORT & IMMIGRATION ---------------- */
+{ en:"Airport", roman:"sanam bin", script:"สนามบิน", phon:"sah-nahm-BIN", words:"sanam = field · bin = to fly → 'flying field'", cats:["airport","taxi"] },
+{ en:"Go to the airport, please", roman:"pai sanam bin (krap)", script:"ไปสนามบิน", phon:"py sah-nahm-BIN", words:"pai = go · sanam bin = airport (fly-field)", cats:["airport","taxi"] },
+{ en:"Passport", roman:"nang-seu dern tang", script:"หนังสือเดินทาง", phon:"nahng-SEU dern-TAHNG", words:"nang-seu = book · dern tang = travel → 'travel book'", cats:["airport","police"], note:"Officials also understand 'passport'." },
+{ en:"Luggage / suitcase", roman:"kra-pao dern tang", script:"กระเป๋าเดินทาง", phon:"grah-POW dern-TAHNG", words:"kra-pao = bag · dern tang = travel", cats:["airport","help"] },
+{ en:"My luggage is lost", roman:"kra-pao dern tang hai", script:"กระเป๋าเดินทางหาย", phon:"grah-POW dern-TAHNG HY", words:"kra-pao = bag · dern tang = travel · hai = lost/vanished", cats:["airport","help"], note:"hai = lost/disappeared. Works for anything: phone hai, wallet hai." },
+{ en:"I'm here traveling / for tourism", roman:"maa thiao (krap)", script:"มาเที่ยว", phon:"mah TEE-ow", words:"maa = come · thiao = travel / go out for fun", cats:["airport","police","meeting"], note:"The answer to 'purpose of visit?'" },
+{ en:"I'm staying at a hotel", roman:"phak tee rong raem", script:"พักที่โรงแรม", phon:"pahk tee rong-RAM", words:"phak = stay/rest · tee = at · rong raem = hotel", cats:["airport"] },
+{ en:"Hotel", roman:"rong raem", script:"โรงแรม", phon:"rong-RAM", words:"rong = building/hall · raem = to lodge overnight", cats:["airport","taxi","basics"] },
+{ en:"Flight", roman:"thiao bin", script:"เที่ยวบิน", phon:"TEE-ow BIN", words:"thiao = trip · bin = fly", cats:["airport","time"] },
+{ en:"How many days? (are you staying)", roman:"gee wan?", script:"กี่วัน", phon:"gee-WAHN", words:"gee = how many · wan = day(s)", cats:["airport","time"], note:"Answer: [number] + wan. 'sip wan' = 10 days." },
+
+/* ---------------- MONEY & PAYING ---------------- */
+{ en:"Money", roman:"ngern", script:"เงิน", phon:"NGERN", cats:["money","basics"] },
+{ en:"Baht (Thai currency)", roman:"baht", script:"บาท", phon:"BAHT", cats:["money","numbers"] },
+{ en:"Check, please", roman:"gep ngern duay / check bin", script:"เก็บเงินด้วย / เช็คบิล", phon:"gep NGERN duay / chek-BIN", words:"gep = collect · ngern = money · duay = please/also", cats:["money","restaurant","cafe"], note:"gep ngern duay is the local classic; check bin works everywhere." },
+{ en:"Paying by card", roman:"jai bat", script:"จ่ายบัตร", phon:"jy-BAHT", words:"jai = pay · bat = card", cats:["money","cafe","restaurant"] },
+{ en:"Cash", roman:"ngern sod", script:"เงินสด", phon:"ngern-SOT", words:"ngern = money · sod = fresh → 'fresh money'", cats:["money","cafe","market"] },
+{ en:"That's 80 baht in total", roman:"tang mod bpaet-sip baht", script:"ทั้งหมด 80 บาท", phon:"tahng-MOT bpat-sip BAHT", words:"tang mod = all together · bpaet-sip = eighty · baht = baht", cats:["money","cafe","numbers"], note:"tang mod = altogether / in total." },
+{ en:"Can I exchange money here?", roman:"tee nee rap laek ngern mai?", script:"ที่นี่รับแลกเงินไหม", phon:"tee-NEE rap lak NGERN my", words:"tee nee = here · rap = accept · laek = exchange · ngern = money · mai = ?", cats:["money"] },
+{ en:"I'd like to exchange dollars to baht", roman:"khor laek ngern dollar pen ngern baht", script:"ขอแลกเงินดอลลาร์เป็นเงินบาท", phon:"kor LAK ngern DOL-lah pen ngern BAHT", words:"khor = please · laek = exchange · pen = into", cats:["money"] },
+{ en:"What's the exchange rate?", roman:"at-tra laek plian tao rai?", script:"อัตราแลกเปลี่ยนเท่าไหร่", phon:"AHT-trah lak PLEE-an tao-RY", words:"at-tra = rate · laek plian = exchange · tao rai = how much", cats:["money"] },
+{ en:"Can I have small bills too?", roman:"khor baeng yoi duay dai mai?", script:"ขอแบงก์ย่อยด้วยได้ไหม", phon:"kor bang-YOY duay dy-MY", words:"khor = please · baeng = banknote · yoi = small/broken · duay = too · dai mai = can?", cats:["money"], note:"Street stalls hate 1000s. Always keep small bills." },
+{ en:"Expensive", roman:"phaeng", script:"แพง", phon:"PANG", cats:["money","bargain","market"] },
+{ en:"Cheap", roman:"thuk", script:"ถูก", phon:"TOOK", cats:["money","bargain","market"] },
+{ en:"Keep the change", roman:"mai tong thon", script:"ไม่ต้องทอน", phon:"my tong TON", words:"mai tong = no need to · thon = give change", cats:["money","taxi","restaurant"] },
+{ en:"Do I pay now or later?", roman:"jai torn nee reu jai tee lang?", script:"จ่ายตอนนี้หรือว่าจ่ายทีหลัง", phon:"jy torn-NEE reu jy tee-LAHNG", words:"jai = pay · torn nee = now · reu = or · tee lang = afterwards", cats:["money","market","restaurant"] },
+
+/* ---------------- NEGOTIATING PRICE ---------------- */
+{ en:"How much is this one?", roman:"an nee tao rai?", script:"อันนี้เท่าไหร่", phon:"ahn-NEE tao-RY", words:"an nee = this one · tao rai = how much", cats:["bargain","market","money"] },
+{ en:"Too expensive!", roman:"phaeng pai!", script:"แพงไป", phon:"pang-PY", words:"phaeng = expensive · pai = too much / over the line", cats:["bargain","market","slang"], note:"Say it with a smile — bargaining is a game, not a fight." },
+{ en:"Can you lower the price a little?", roman:"lot noi dai mai?", script:"ลดหน่อยได้ไหม", phon:"lot NOY dy-MY", words:"lot = reduce · noi = a little · dai mai = can you?", cats:["bargain","market"] },
+{ en:"How about 300 (baht)?", roman:"saam roi dai mai?", script:"สามร้อยได้ไหม", phon:"sahm-ROY dy-MY", words:"saam roi = three hundred · dai mai = possible?", cats:["bargain","numbers","taxi"], note:"Pattern: [your price] + dai mai. Counter-offer machine." },
+{ en:"It's just close by!", roman:"glai nit diao eng", script:"ใกล้นิดเดียวเอง", phon:"gly nit DEE-ow eng", words:"glai = near · nit diao = a tiny bit · eng = merely", cats:["bargain","taxi"], note:"From the taxi haggle: pushing back on an inflated flat rate." },
+{ en:"Sorry, then I'm not going", roman:"khor thot, ngan mai pai", script:"ขอโทษ งั้นไม่ไป", phon:"kor-TOTE, ngahn my-PY", words:"ngan = in that case · mai = not · pai = go", cats:["bargain","taxi"], note:"The walk-away. Watch the meter suddenly become available." },
+{ en:"I don't want it", roman:"mai ao", script:"ไม่เอา", phon:"my-OW", words:"mai = not · ao = take/want", cats:["bargain","market","basics","nightlife"], note:"Firm but normal. Add krap/ka to keep it polite." },
+{ en:"Is it good? / good deal?", roman:"dee mai?", script:"ดีไหม", phon:"dee-MY", words:"dee = good · mai = yes/no?", cats:["bargain","basics","friends"] },
+{ en:"Around / approximately...", roman:"pra-marn...", script:"ประมาณ...", phon:"prah-MAHN", cats:["bargain","time","numbers"] },
+
+/* ---------------- TIME & SCHEDULES ---------------- */
+{ en:"What time is it?", roman:"gee mong laew?", script:"กี่โมงแล้ว", phon:"gee-MONG lao", words:"gee = how many · mong = o'clock · laew = already", cats:["time","basics"] },
+{ en:"Today", roman:"wan nee", script:"วันนี้", phon:"wahn-NEE", words:"wan = day · nee = this", cats:["time","basics"] },
+{ en:"Tomorrow", roman:"phrung nee", script:"พรุ่งนี้", phon:"proong-NEE", words:"phrung = the coming morning · nee = this", cats:["time","basics"] },
+{ en:"Yesterday", roman:"meua wan", script:"เมื่อวาน", phon:"MEU-ah WAHN", words:"meua = time-of · wan = day (past)", cats:["time"] },
+{ en:"Morning", roman:"torn chao", script:"ตอนเช้า", phon:"torn-CHOW", words:"torn = period/part of day · chao = morning", cats:["time"] },
+{ en:"Time", roman:"we-laa", script:"เวลา", phon:"way-LAH", cats:["time"] },
+{ en:"When? (are you going to...)", roman:"...muea-rai?", script:"...เมื่อไหร่", phon:"MEU-ah-RY", words:"muea-rai = when (time + how much)", cats:["time"], note:"Verb + muea-rai: pai muea-rai = when do we go?" },
+{ en:"How long do I have to wait?", roman:"ror nan kae nai?", script:"รอนานแค่ไหน", phon:"ror NAHN kah-NY", words:"ror = wait · nan = long · kae nai = how much", cats:["time","restaurant","taxi"] },
+{ en:"I have an appointment / plans", roman:"mee nat", script:"มีนัด", phon:"mee-NAHT", words:"mee = have · nat = appointment/date", cats:["time","friends","nightlife"], note:"Also the polite escape hatch: 'sorry, I have plans.'" },
+{ en:"Tell me when you're free", roman:"wang laew bork", script:"ว่างแล้วบอก", phon:"WAHNG lao BORK", words:"wang = free · laew = then/already · bork = tell", cats:["time","friends","flirt"] },
+{ en:"I'm on my way", roman:"gam-lang pai", script:"กำลังไป", phon:"gahm-lahng-PY", words:"gam-lang = in the middle of · pai = going", cats:["time","friends"] },
+{ en:"I'm not available / no time", roman:"mai wang", script:"ไม่ว่าง", phon:"my-WAHNG", words:"mai = not · wang = free/empty", cats:["time","friends"] },
+
+/* ---------------- TAXI & SCOOTER ---------------- */
+{ en:"Driver, do you go to ... ?", roman:"nong krap, pai ... mai?", script:"น้องครับ ไป...ไหม", phon:"nong-KRAP, py ... MY", words:"nong = younger one (friendly address) · pai = go · mai = ?", cats:["taxi"], note:"nong = addressing someone younger; pii = older. Instant rapport." },
+{ en:"Flat rate or meter?", roman:"mao jai reu chai miter?", script:"เหมาจ่ายหรือว่าใช้มิเตอร์", phon:"mao-JY reu chy MEE-ter", words:"mao = lump-sum · jai = pay · reu = or · chai = use", cats:["taxi","bargain"] },
+{ en:"Can we use the meter?", roman:"chai miter dai mai?", script:"ใช้มิเตอร์ได้ไหม", phon:"chy MEE-ter dy-MY", words:"chai = use · miter = meter · dai mai = can we?", cats:["taxi","bargain"], note:"Meter is almost always cheaper than a quoted flat rate." },
+{ en:"How much is the flat rate?", roman:"mao jai tao rai?", script:"เหมาจ่ายเท่าไหร่", phon:"mao-JY tao-RY", words:"mao jai = flat-rate pay · tao rai = how much", cats:["taxi","bargain","money"] },
+{ en:"Stop here, please", roman:"jort trong nee (krap)", script:"จอดตรงนี้", phon:"JORT trong-NEE", words:"jort = park/pull over · trong nee = right here", cats:["taxi"] },
+{ en:"Stop in front of the mall", roman:"jort khang naa haang", script:"จอดข้างหน้าห้าง", phon:"JORT kahng-NAH HAHNG", words:"jort = stop · khang naa = in front of · haang = mall", cats:["taxi"], note:"haang = shopping mall. jort khang naa ... = stop in front of ..." },
+{ en:"Turn left", roman:"liao sai", script:"เลี้ยวซ้าย", phon:"LEE-ow SY", words:"liao = turn · sai = left", cats:["taxi","basics"] },
+{ en:"Turn right", roman:"liao khwa", script:"เลี้ยวขวา", phon:"LEE-ow KWAH", words:"liao = turn · khwa = right", cats:["taxi","basics"] },
+{ en:"Straight ahead", roman:"trong pai", script:"ตรงไป", phon:"trong-PY", words:"trong = straight · pai = go", cats:["taxi","basics"] },
+{ en:"Motorbike taxi", roman:"win motorsai", script:"วินมอเตอร์ไซค์", phon:"win mo-ter-SY", words:"win = the stand/queue · motorsai = motorcycle", cats:["taxi"], note:"The orange-vest guys on corners. Fastest way through traffic." },
+{ en:"Slow down a bit, please!", roman:"cha-cha noi na (krap)", script:"ช้าๆ หน่อยนะ", phon:"chah-CHAH noy nah", words:"cha-cha = slow-slow · noi = a bit · na = okay?", cats:["taxi","help"], note:"Essential vocabulary on the back of a scooter." },
+{ en:"Songthaew — open-air truck bus", roman:"songthaew", script:"สองแถว", phon:"SONG-tao", words:"song = two · thaew = rows", cats:["taxi","slang"], note:"Literally 'two rows' — the benches in the back." },
+{ en:"You can sit here (offering seat)", roman:"nang nee dai (krap)", script:"นั่งนี่ได้", phon:"nahng-NEE dy", words:"nang = sit · nee = here · dai = can", cats:["taxi","friends","meeting"], note:"Half-stand, gesture, small smile. Add 'chern krap' = please, I invite you." },
+{ en:"Here — 200 baht, keep the change", roman:"nee krap, saawng roi baht, mai tong thon", script:"นี่ครับ สองร้อยบาท ไม่ต้องทอน", phon:"nee-KRAP, sawng-roy BAHT, my tong TON", words:"nee = here · saawng roi = 200 · mai tong thon = no need for change", cats:["taxi","money","numbers"] },
+
+/* ---------------- CAFE ---------------- */
+{ en:"What can I get for you? (you'll hear)", roman:"rap arai dee (krap/ka)?", script:"รับอะไรดี", phon:"rap ah-RY DEE", words:"rap = receive/take · arai = what · dee = good → 'what'll be good?'", cats:["cafe","restaurant","market"], note:"The universal shop greeting. Your cue to order." },
+{ en:"I'll take one hot latte, please", roman:"ao latte rorn neung kaew", script:"เอาลาเต้ร้อน 1 แก้ว", phon:"ow lah-TAY RAWN neung GAO", words:"ao = I'll take · rorn = hot · neung = one · kaew = glass/cup", cats:["cafe"], note:"ao = I'll take. kaew = glass/cup (classifier for drinks)." },
+{ en:"One iced Thai tea, please", roman:"ao cha thai yen neung kaew", script:"เอาชาไทยเย็น 1 แก้ว", phon:"ow chah-TY YEN neung GAO", words:"ao = take · cha = tea · yen = iced · neung kaew = one glass", cats:["cafe","food"] },
+{ en:"Large size", roman:"size yai", script:"ไซส์ใหญ่", phon:"size-YY", words:"yai = big", cats:["cafe"] },
+{ en:"Small size", roman:"size lek", script:"ไซส์เล็ก", phon:"size-LEK", words:"lek = small", cats:["cafe"] },
+{ en:"Normal sweetness? (you'll hear)", roman:"wan pokati mai?", script:"หวานปกติมั้ย", phon:"wahn bpo-gah-DTEE my", words:"wan = sweet · pokati = normal · mai = yes/no?", cats:["cafe"], note:"Thai default sweetness is VERY sweet. See the next two cards." },
+{ en:"Less sweet, please", roman:"wan noi", script:"หวานน้อย", phon:"wahn-NOY", words:"wan = sweet · noi = little", cats:["cafe","food"] },
+{ en:"No sugar / not sweet", roman:"mai wan", script:"ไม่หวาน", phon:"my-WAHN", words:"mai = not · wan = sweet", cats:["cafe","food"] },
+{ en:"For here", roman:"gin tee nee", script:"กินที่นี่", phon:"gin tee-NEE", words:"gin = eat/drink · tee nee = (at) here", cats:["cafe","market"] },
+{ en:"To go / take away", roman:"glub baan", script:"กลับบ้าน", phon:"glup-BAHN", words:"glub = return · baan = home", cats:["cafe","market"], note:"Literally 'return home' — Thai for takeout." },
+{ en:"Hot (drink)", roman:"rorn", script:"ร้อน", phon:"RAWN", cats:["cafe","food"] },
+{ en:"Iced / cold (drink)", roman:"yen", script:"เย็น", phon:"YEN", cats:["cafe","food"] },
+
+/* ---------------- MARKET & STREET FOOD ---------------- */
+{ en:"Market", roman:"talat", script:"ตลาด", phon:"tah-LAHT", words:"talat = market", cats:["market","basics"] },
+{ en:"How much per plate?", roman:"jaan la tao rai?", script:"จานละเท่าไหร่", phon:"jahn-LAH tao-RY", words:"jaan = plate · la = per/each · tao rai = how much", cats:["market","money","restaurant"], note:"...la tao rai = 'how much each'. chaam la = per bowl." },
+{ en:"One omelet on rice, please", roman:"ao khao khai jiao neung jaan", script:"เอาข้าวไข่เจียวหนึ่งจาน", phon:"ow kow ky-JEE-ow neung JAHN", words:"ao = take · khao = rice · khai = egg · jiao = pan-fried · neung jaan = one plate", cats:["market","food","restaurant"], note:"The 40-baht meal that never fails." },
+{ en:"One beef noodle, please", roman:"ao guay-tiao neua neung chaam", script:"เอาก๋วยเตี๋ยวเนื้อหนึ่งชาม", phon:"ow guay-TEE-ow NEU-ah neung CHAHM", words:"guay-tiao = noodles · neua = beef · neung chaam = one bowl", cats:["market","food","restaurant"] },
+{ en:"Can I buy coupons for 100 baht?", roman:"khor seu coupon neung roi baht", script:"ขอซื้อคูปอง 100 บาท", phon:"kor SEU koo-PONG neung-roy BAHT", words:"khor = please · seu = buy · neung roi = 100", cats:["market","money"], note:"Mall food courts run on prepaid coupons/cards." },
+{ en:"Can I refund the coupons?", roman:"khor laek kheun (coupon)", script:"ขอแลกคืน (คูปอง)", phon:"kor lak-KEUN", words:"khor = please · laek = exchange · kheun = back", cats:["market","money"], note:"Get your unused coupon money back before you leave." },
+{ en:"Delicious!", roman:"aroi!", script:"อร่อย", phon:"ah-ROY", cats:["market","food","restaurant","basics"] },
+{ en:"SO delicious (Isan style)", roman:"zaap / sap!", script:"แซ่บ", phon:"SAP!", words:"sap = spicy/delicious in Isan dialect", cats:["market","food","slang","nightlife"], note:"Isan word gone national. Also slang for 'hot/spicy' people..." },
+{ en:"A little bit spicy", roman:"phet nit noi", script:"เผ็ดนิดหน่อย", phon:"pet nit-NOY", words:"phet = spicy · nit noi = a little bit", cats:["market","food","restaurant"] },
+{ en:"Not spicy, please", roman:"mai phet", script:"ไม่เผ็ด", phon:"my-PET", words:"mai = not · phet = spicy", cats:["market","food","restaurant","basics"], note:"Know that Thai 'not spicy' may still have a kick." },
+
+/* ---------------- RESTAURANT ---------------- */
+{ en:"What would you like to order?", roman:"yak sang arai?", script:"อยากสั่งอะไร", phon:"yahk SAHNG ah-RY", words:"yak = want · sang = order · arai = what", cats:["restaurant"] },
+{ en:"What will you take? (you'll hear)", roman:"ao arai (krap/ka)?", script:"เอาอะไร", phon:"ow ah-RY", words:"ao = take · arai = what", cats:["restaurant","market","cafe"] },
+{ en:"I want to order Tom Yum with shrimp", roman:"yak sang tom yum goong", script:"อยากสั่งต้มยำกุ้ง", phon:"yahk sahng tom-yum-GOONG", words:"yak = want · sang = order · goong = shrimp", cats:["restaurant","food"] },
+{ en:"I'll order pork fried rice then", roman:"sang khao phat muu gor laew gun", script:"สั่งข้าวผัดหมูก็แล้วกัน", phon:"sahng kow-paht-MOO gor lao gun", words:"sang = order · khao phat = fried rice · muu = pork · gor laew gun = ...then, I guess", cats:["restaurant","food"], note:"gor laew gun = '...then / I guess' — natural deciding phrase." },
+{ en:"Can you eat spicy food?", roman:"gin phet dai mai?", script:"กินเผ็ดได้ไหม", phon:"gin PET dy-MY", words:"gin = eat · phet = spicy · dai mai = can you?", cats:["restaurant","food","meeting"] },
+{ en:"The food here is really tasty", roman:"ahan tee nee aroi jing jing", script:"อาหารที่นี่อร่อยจริงๆ", phon:"ah-HAHN tee-NEE ah-ROY jing-JING", words:"ahan = food · tee nee = here · aroi = tasty · jing jing = truly-truly", cats:["restaurant","food","friends"] },
+{ en:"The most delicious", roman:"aroi tee sud", script:"อร่อยที่สุด", phon:"ah-ROY tee-SOOT", words:"aroi = delicious · tee sud = the most", cats:["restaurant","food","slang"], note:"...tee sud = 'the most ...'. suay tee sud = most beautiful." },
+{ en:"Thank you, but I'm full", roman:"khop khun, tae im mak", script:"ขอบคุณ แต่อิ่มมาก", phon:"kop-KOON, tah im-MAHK", words:"tae = but · im = full · mak = very", cats:["restaurant","food","sorry"], note:"im laew = I'm full. The polite way to stop the food avalanche." },
+{ en:"Are you allergic to any food?", roman:"phae ahan mai?", script:"แพ้อาหารไหม", phon:"pah ah-HAHN my", words:"phae = allergic · ahan = food · mai = ?", cats:["restaurant","food","sick"] },
+{ en:"I can eat anything except shrimp", roman:"gin dai thuk yang, yok wen goong", script:"กินได้ทุกอย่าง ยกเว้นกุ้ง", phon:"gin dy took-YAHNG, yok-WEN GOONG", words:"gin dai = can eat · thuk yang = everything · yok wen = except · goong = shrimp", cats:["restaurant","food","sick"], note:"yok wen = except. Swap goong for your allergy." },
+{ en:"Would you like dessert?", roman:"yak sang khanom mai?", script:"อยากสั่งขนมไหม", phon:"yahk sahng kah-NOM my", words:"yak = want · sang = order · khanom = dessert · mai = ?", cats:["restaurant","food"] },
+{ en:"Unbelievably delicious!", roman:"aroi mai wai!", script:"อร่อยไม่ไหว", phon:"ah-ROY my-WY", words:"aroi = delicious · mai wai = can't handle it", cats:["restaurant","food","slang"], note:"[adjective] + mai wai = 'unbearably...'. rorn mai wai = way too hot." },
+
+/* ---------------- FOOD & DRINK ---------------- */
+{ en:"Water", roman:"nam", script:"น้ำ", phon:"NAHM", cats:["food","basics"] },
+{ en:"Plain water", roman:"nam plao", script:"น้ำเปล่า", phon:"nahm-PLOW", words:"nam = water · plao = plain/bare", cats:["food","nightlife","cafe"], note:"phom khor nam plao = I'll just have water. Sober-night MVP." },
+{ en:"Food", roman:"ahan", script:"อาหาร", phon:"ah-HAHN", cats:["food","basics"] },
+{ en:"Rice", roman:"khao", script:"ข้าว", phon:"KOW", cats:["food"] },
+{ en:"Chicken", roman:"gai", script:"ไก่", phon:"GY", cats:["food"] },
+{ en:"Pork", roman:"muu", script:"หมู", phon:"MOO", cats:["food","slang"], note:"Also slang for an 'easy mark' — see Slang & Jokes." },
+{ en:"Beef", roman:"neua", script:"เนื้อ", phon:"NEU-ah", cats:["food"] },
+{ en:"Shrimp", roman:"goong", script:"กุ้ง", phon:"GOONG", cats:["food"] },
+{ en:"Spicy", roman:"phet", script:"เผ็ด", phon:"PET", cats:["food","basics"] },
+{ en:"Sweet", roman:"wan", script:"หวาน", phon:"WAHN", cats:["food","cafe"] },
+{ en:"Beer", roman:"bia", script:"เบียร์", phon:"BEE-ah", cats:["food","nightlife"] },
+{ en:"Coffee", roman:"gaa-fae", script:"กาแฟ", phon:"gah-FAA", cats:["food","cafe"] },
+{ en:"Dessert / sweets", roman:"khanom", script:"ขนม", phon:"kah-NOM", cats:["food"] },
+{ en:"I don't drink (alcohol)", roman:"phom mai duem", script:"ผมไม่ดื่ม", phon:"pom my-DEUM", words:"phom = I (male) · mai = not · duem = drink", cats:["food","nightlife"] },
+{ en:"No alcohol (in the drink), please", roman:"mai sai lao", script:"ไม่ใส่เหล้า", phon:"my sy-LAO", words:"mai = don't · sai = put in · lao = liquor", cats:["food","nightlife","cafe"], note:"Literally 'don't put liquor'. Be firm — mocktails can get a splash." },
+{ en:"Does this have alcohol in it?", roman:"mee alcohol mai?", script:"มีแอลกอฮอล์ไหม", phon:"mee AL-ko-hol my", words:"mee = have · mai = yes/no?", cats:["food","nightlife"] },
+{ en:"I'm not a picky eater", roman:"pen khon gin ngai", script:"เป็นคนกินง่าย", phon:"pen kon gin-NGY", words:"pen = am · khon = person · gin = eat · ngai = easy → 'an easy-eating person'", cats:["food","restaurant","meeting"] },
+
+/* ---------------- MEETING PEOPLE ---------------- */
+{ en:"What's your name?", roman:"khun cheu arai?", script:"คุณชื่ออะไร", phon:"koon CHEU ah-RY", words:"khun = you · cheu = name · arai = what", cats:["meeting","friends","flirt"] },
+{ en:"My name is ...", roman:"phom/chan cheu ...", script:"ผม/ฉันชื่อ...", phon:"pom (m) / chahn (f) CHEU ...", words:"phom (m) / chan (f) = I · cheu = to be named", cats:["meeting","friends","flirt"] },
+{ en:"Nice to meet you", roman:"yindee tee dai roo jak", script:"ยินดีที่ได้รู้จัก", phon:"yin-DEE tee dy ROO-jahk", words:"yindee = glad · tee dai = to get to · roo jak = know (someone)", cats:["meeting","friends","flirt"] },
+{ en:"Where are you from?", roman:"pen khon tee nai?", script:"เป็นคนที่ไหน", phon:"pen kon tee-NY", words:"pen = to be · khon = person · tee nai = of where", cats:["meeting","friends"], note:"From the 'first conversation' episode — you'll be asked this constantly." },
+{ en:"I'm American / from America", roman:"pen khon america", script:"เป็นคนอเมริกา", phon:"pen kon ah-may-ri-GAH", words:"pen = to be · khon = person (of) · + country", cats:["meeting"], note:"Swap in your country. pen khon + place." },
+{ en:"Do you like Thailand?", roman:"chop prathet thai mai?", script:"ชอบประเทศไทยไหม", phon:"chop prah-TET TY my", words:"chop = like · prathet = country · thai = Thai · mai = ?", cats:["meeting","friends"] },
+{ en:"I love Thailand", roman:"phom rak meuang thai", script:"ผมรักเมืองไทย", phon:"pom RAHK meu-ahng TY", words:"phom = I · rak = love · meuang = land/city", cats:["meeting","friends","flirt"], note:"Guaranteed smiles." },
+{ en:"I like Thai food very much", roman:"chop ahan thai mak", script:"ชอบอาหารไทยมาก", phon:"chop ah-HAHN TY MAHK", words:"chop = like · ahan = food · mak = very much", cats:["meeting","food","friends"] },
+{ en:"Have you been to ... ?", roman:"koei pai ... mai?", script:"เคยไป...ไหม", phon:"KOEI py ... my", words:"koei = ever (have-you-ever) · pai = go · mai = ?", cats:["meeting","sights","nature"], note:"koei = ever/have-you-ever. Great small-talk engine." },
+{ en:"I've been to Chiang Mai and Bangkok", roman:"koei pai chiang mai lae krung thep", script:"เคยไปเชียงใหม่และกรุงเทพ", phon:"koei py chee-ahng-MY la groong-TEP", words:"koei = have-ever · pai = gone · lae = and", cats:["meeting","sights"], note:"Krung Thep = Bangkok's real Thai name." },
+{ en:"What do you like to do? (hobbies)", roman:"chop tham arai?", script:"ชอบทำอะไร", phon:"chop tahm ah-RY", words:"chop = like · tham = do · arai = what", cats:["meeting","friends","flirt"] },
+{ en:"How are you? / Are you well?", roman:"sabai dee mai?", script:"สบายดีไหม", phon:"sah-by-DEE my", words:"sabai = comfortable/well · dee = good · mai = ?", cats:["meeting","basics","friends"] },
+
+/* ---------------- FRIENDS & COMPLIMENTS ---------------- */
+{ en:"Friend", roman:"pheuan", script:"เพื่อน", phon:"PEU-an", cats:["friends","people","meeting"] },
+{ en:"Fun / to have fun", roman:"sanuk", script:"สนุก", phon:"sah-NOOK", words:"sanuk = fun — the Thai organizing principle", cats:["friends","nightlife","slang"], note:"The organizing principle of Thai life. sanuk mak = so fun!" },
+{ en:"Very good / you're great at that!", roman:"geng mak!", script:"เก่งมาก", phon:"geng-MAHK", words:"geng = skilled · mak = very", cats:["friends","basics"] },
+{ en:"Cute", roman:"narak", script:"น่ารัก", phon:"nah-RAHK", words:"na = worthy of · rak = love → 'lovable'", cats:["friends","flirt"], note:"Often a HIGHER compliment than 'beautiful' — charming, easy to be around." },
+{ en:"Beautiful", roman:"suay", script:"สวย", phon:"SUAY", cats:["friends","flirt","sights"], note:"Rising tone! Flat tone suay = 'unlucky'. Practice this one." },
+{ en:"Handsome", roman:"lor", script:"หล่อ", phon:"LOR", cats:["friends","flirt","nightlife"] },
+{ en:"Looks good / classy", roman:"doo dee", script:"ดูดี", phon:"doo-DEE", words:"doo = look · dee = good", cats:["friends","flirt","slang"] },
+{ en:"10 out of 10", roman:"ten tem", script:"10 เต็ม", phon:"ten-TEM", words:"ten = 10 · tem = full", cats:["friends","flirt","slang"], note:"Often followed by 'mai hak' — no points deducted." },
+{ en:"I'll message you in a bit", roman:"diao thak haa", script:"เดี๋ยวทักหา", phon:"DEE-ow tahk-HAH", words:"diao = in a moment · thak = reach out/greet · haa = toward", cats:["friends","flirt","time"] },
+{ en:"Come on, let's go!", roman:"pai thuer!", script:"ไปเถอะ", phon:"py-TUER", words:"pai = go · thuer = come-on! urging particle", cats:["friends","nightlife"], note:"...thuer = urging particle. gin thuer = come on, let's eat!" },
+{ en:"Exactly! / I agree", roman:"nan na si", script:"นั่นน่ะสิ", phon:"nahn-nah-SEE", words:"nan = that · na si = exactly-so emphasis", cats:["friends","slang"] },
+{ en:"What should we do?", roman:"ao yang-ngai dee?", script:"เอายังไงดี", phon:"ow yahng-NGY dee", words:"ao = take · yang-ngai = which way · dee = good", cats:["friends","slang"] },
+{ en:"Up to you / totally your call", roman:"laew tae loey", script:"แล้วแต่เลย", phon:"lao-tah-LOEY", words:"laew tae = it depends on (you) · loey = entirely", cats:["friends","slang","basics"] },
+
+/* ---------------- TALKING TO CUTE GIRLS ---------------- */
+{ en:"You're very cute", roman:"khun narak mak", script:"คุณน่ารักมาก", phon:"koon nah-RAHK mahk", words:"khun = you · narak = cute (worthy-of-love) · mak = very", cats:["flirt"], note:"Warmer and less 'touristy' than khun suay mak." },
+{ en:"You're very beautiful", roman:"khun suay mak", script:"คุณสวยมาก", phon:"koon SUAY mahk", words:"khun = you · suay = beautiful · mak = very", cats:["flirt"], note:"The classic. Fine, but every farang says it — narak lands better." },
+{ en:"Radiant / has a glow", roman:"aura jap", script:"ออร่าจับ", phon:"OW-rah JAHP", words:"aura = aura (Eng.) · jap = to catch", cats:["flirt","slang"], note:"'Caught the aura' — star quality when someone walks in." },
+{ en:"Can I get your LINE?", roman:"khor line dai mai?", script:"ขอไลน์ได้ไหม", phon:"kor LINE dy-MY", words:"khor = may I have · dai mai = can I?", cats:["flirt","friends"], note:"Thailand runs on LINE, not WhatsApp. This is THE number ask." },
+{ en:"Can I buy you a drink?", roman:"liang drink dai mai?", script:"เลี้ยงดื่มได้ไหม", phon:"LEE-ang drink dy-MY", words:"liang = to treat someone · dai mai = may I?", cats:["flirt","nightlife"], note:"liang = to treat someone." },
+{ en:"The farang wants to buy you a drink", roman:"farang yak liang drink", script:"ฝรั่งอยากเลี้ยงดื่ม", phon:"fah-RAHNG yahk LEE-ang drink", words:"farang = the foreigner · yak = wants · liang = to treat", cats:["flirt","nightlife","slang"], note:"Third-person joke — shows you're in on it." },
+{ en:"My type!", roman:"thest", script:"เทส", phon:"TEST", cats:["flirt","slang","nightlife"], note:"From English 'taste'. kon nee thest mak = totally my type." },
+{ en:"I'm a good guy", roman:"phom khon dee", script:"ผมคนดี", phon:"pom kon-DEE", words:"phom = I · khon = person · dee = good", cats:["flirt","slang"] },
+{ en:"I'm not a player", roman:"phom mai chao-choo", script:"ผมไม่เจ้าชู้", phon:"pom my jow-CHOO", words:"phom = I · mai = not · chao-choo = player/butterfly", cats:["flirt","nightlife","slang"], note:"chao-choo = player/butterfly. They also just say 'butterfly'." },
+{ en:"Shy / blushing", roman:"kern", script:"เขิน", phon:"KERN", cats:["flirt","slang"], note:"'Kern laew!' = someone's blushing! Classic tease." },
+{ en:"I'm jealous! (playful)", roman:"it-cha!", script:"อิจฉา", phon:"it-CHAH", words:"it-cha = envy/jealousy", cats:["flirt","friends","slang"] },
+{ en:"Angel (very sweet/beautiful)", roman:"nang-fah", script:"นางฟ้า", phon:"nahng-FAH", words:"nang = lady · fah = sky → 'sky lady'", cats:["flirt","slang"] },
+
+/* ---------------- NIGHTLIFE & PARTY ---------------- */
+{ en:"Drunk", roman:"mao", script:"เมา", phon:"MAO", cats:["nightlife"] },
+{ en:"Very drunk / wasted", roman:"mao mak", script:"เมามาก", phon:"mao-MAHK", words:"mao = drunk · mak = very", cats:["nightlife"] },
+{ en:"Not drunk / I'm sober", roman:"mai mao", script:"ไม่เมา", phon:"my-MAO", words:"mai = not · mao = drunk", cats:["nightlife"] },
+{ en:"Are you okay? / can you handle it?", roman:"wai mai?", script:"ไหวไหม", phon:"wy-MY", words:"wai = able to bear it · mai = ?", cats:["nightlife","help","friends"], note:"The caring check-in when a friend's fading." },
+{ en:"Are you going to be sick?", roman:"ja u-ak mai?", script:"จะอ้วกไหม", phon:"jah OO-ahk my", words:"ja = will · u-ak = vomit · mai = ?", cats:["nightlife","sick"], note:"u-ak = vomit. Situational awareness, curbside edition." },
+{ en:"Drunk already — go home", roman:"mao laew, glub baan", script:"เมาแล้วกลับบ้าน", phon:"mao LAO, glup-BAHN", words:"mao = drunk · laew = already · glub baan = return home", cats:["nightlife","friends"] },
+{ en:"Let's call a Grab / taxi", roman:"riak grab / taxi", script:"เรียกแกร็บ / แท็กซี่", phon:"REE-ak GRAB / TAK-see", words:"riak = call/summon", cats:["nightlife","taxi","help"], note:"riak = to call/summon. Grab is the Uber of Thailand." },
+{ en:"Angry / mad", roman:"mo-ho", script:"โมโห", phon:"mo-HO", cats:["nightlife","sorry"] },
+{ en:"Fighting / a fight", roman:"ta-lao gun", script:"ทะเลาะกัน", phon:"tah-LAO gun", words:"ta-lao = quarrel · gun = each other", cats:["nightlife","help"], note:"If you hear this word, drift the other direction." },
+{ en:"Be careful / watch out!", roman:"ra-wang!", script:"ระวัง", phon:"rah-WAHNG!", words:"ra-wang = beware", cats:["nightlife","help","basics"] },
+{ en:"Cannabis / marijuana", roman:"gan-cha", script:"กัญชา", phon:"gahn-CHAH", cats:["nightlife"], note:"You'll see this word on shop signs everywhere now." },
+{ en:"I don't smoke", roman:"phom mai soop", script:"ผมไม่สูบ", phon:"pom my-SOOP", words:"phom = I · mai = not · soop = smoke", cats:["nightlife"], note:"soop = to smoke. Works for cigarettes and everything else." },
+{ en:"Cheers!", roman:"chon gaew!", script:"ชนแก้ว", phon:"chon-GAO!", words:"chon = clash/bump · kaew = glass", cats:["nightlife","friends"], note:"Literally 'clink glasses'." },
+{ en:"He's 'delicious' (teasing about a hot guy/girl)", roman:"kin sap", script:"กินแซ่บ", phon:"kin-SAP", words:"kin = eat · sap = spicy/delicious", cats:["nightlife","slang","flirt"], note:"'Eating well' — a whole snack. What friends whisper about your catch." },
+{ en:"You're gonna get it (something spicy will happen)", roman:"don nae", script:"โดนแน่", phon:"don-NAA", words:"don = get hit by · nae = for sure", cats:["nightlife","slang"] },
+
+/* ---------------- SLANG & JOKES ---------------- */
+{ en:"Sure, why not / fine, whatever", roman:"gor dai", script:"ก็ได้", phon:"gor-DY", words:"gor = also/then · dai = can/fine", cats:["slang","basics","friends"], note:"Tone decides: easygoing 'works for me' or sassy 'FINE then.'" },
+{ en:"Passable / he'll do", roman:"dai yoo", script:"ได้อยู่", phon:"dy-YOO", words:"dai = fine · yoo = still → 'still works'", cats:["slang","nightlife","flirt"], note:"Isan-flavored rating: 'yeah, I'd go for that.'" },
+{ en:"Let it go / forget it", roman:"chang mun", script:"ช่างมัน", phon:"chahng-MUN", words:"chang = let/leave · mun = it", cats:["slang","sorry","basics"], note:"The ultimate stress-shedding phrase." },
+{ en:"Never mind, go with the flow", roman:"joy", script:"จอย", phon:"JOY", cats:["slang"], note:"From English 'enjoy'." },
+{ en:"Cool! / fabulous!", roman:"lert / rert", script:"เลิศ / เริ่ด", phon:"LERT / RERT", cats:["slang","friends"] },
+{ en:"Slayed it / killed it", roman:"tam theung", script:"ทำถึง", phon:"tahm-TEUNG", words:"tam = do · theung = reach (the mark)", cats:["slang","friends"], note:"Internet slang: exceeded expectations." },
+{ en:"Juicy / great", roman:"cham", script:"ฉ่ำ", phon:"CHAHM", cats:["slang","food"], note:"Literally 'juicy' — for steaks and experiences alike." },
+{ en:"Stunning / amazing", roman:"cheung", script:"จึ้ง", phon:"CHEUNG", cats:["slang"], note:"⚠ Your Gemini doc said 'a failure' — current usage is the OPPOSITE: stunning/amazing. Verify with locals." },
+{ en:"Oh my god! / what the...", roman:"khun phra!", script:"คุณพระ", phon:"koon-PRAH!", cats:["slang"], note:"Literally invokes the monks — Thai 'good heavens!'" },
+{ en:"To prank / mess with someone", roman:"ghaeng", script:"แกง", phon:"GANG", cats:["slang","friends"], note:"Literally 'curry'. yaa ghaeng = don't prank me!" },
+{ en:"Don't even try it / bad idea", roman:"yaa haa tham", script:"อย่าหาทำ", phon:"yah hah-TAHM", words:"yaa = don't · haa = seek · tham = do", cats:["slang","friends"], note:"'Don't go looking for things to do' = don't go looking for trouble." },
+{ en:"'Wow, first time in my life!' (sarcastic: no kidding)", roman:"khrang raek nai chee-wit", script:"ครั้งแรกในชีวิต", phon:"krahng-RAAK ny chee-WIT", words:"khrang raek = first time · nai = in · chee-wit = life", cats:["slang"], note:"Deploy when someone states the blazingly obvious." },
+{ en:"Lazy / don't feel like it", roman:"kee-kiat", script:"ขี้เกียจ", phon:"kee-KEE-at", words:"kee- = prone-to · kiat = lazy", cats:["slang","friends"] },
+{ en:"Feeling down / bummed", roman:"noy", script:"นอย", phon:"NOY", cats:["slang"], note:"From the Gemini slang doc — verify." },
+{ en:"Dead tired / exhausted", roman:"khit", script:"ขิต", phon:"KIT", cats:["slang"], note:"Slang for 'I'm dead.' From Gemini source — verify." },
+{ en:"Bullshit / lying through their teeth", roman:"dtor-lae", script:"ตอแหล", phon:"dtor-LAA", cats:["slang"], note:"⚠ STRONG — close friends only, or a genuine insult. Softer/cuter: yaa doy." },
+{ en:"Stingy / cheap", roman:"kee-niaw", script:"ขี้เหนียว", phon:"kee-NEE-ow", words:"kee- = prone-to · niaw = sticky → 'sticky with money'", cats:["slang","nightlife","money"], note:"The label nobody wants in the bar scene." },
+{ en:"'Pig' — an easy mark", roman:"moo", script:"หมู", phon:"MOO", cats:["slang","nightlife"], note:"phom mai chai moo na! = I'm not a pig! Shows you know the game." },
+{ en:"Big spender / sugar daddy", roman:"sai pay", script:"สายเปย์", phon:"sy-PAY", words:"sai = type/lineage · pay = to pay (Eng.)", cats:["slang","nightlife","money"] },
+{ en:"Player / butterfly", roman:"chao-choo", script:"เจ้าชู้", phon:"jow-CHOO", cats:["slang","nightlife","flirt"] },
+{ en:"'Uncle' (teasing: too old)", roman:"loong", script:"ลุง", phon:"LOONG", cats:["slang","nightlife","people"], note:"Comeback on the next card." },
+{ en:"Uncle, but rich!", roman:"loong tae ruay na!", script:"ลุงแต่รวยนะ", phon:"loong tah RUAY nah!", words:"loong = uncle · tae = but · ruay = rich · na = you know!", cats:["slang","nightlife"], note:"Your signature joke. Deploy when someone calls you loong." },
+{ en:"High quality / premium (hot person)", roman:"ngarn dee", script:"งานดี", phon:"ngahn-DEE", words:"ngarn = work · dee = good → 'good work'", cats:["slang","flirt","nightlife"], note:"Literally 'good work'." },
+{ en:"'High damage' (so hot it hurts)", roman:"damage raeng", script:"ดาเมจแรง", phon:"DAM-age RANG", cats:["slang","flirt"], note:"Gamer slang: they depleted your health bar." },
+{ en:"I am rich", roman:"phom ruay", script:"ผมรวย", phon:"pom-RUAY", words:"phom = I · ruay = rich", cats:["slang","nightlife"], note:"Rich but picky: 'ruay tae lueak'. Rich in kindness: 'ruay nam jai'." },
+{ en:"I am not cheap", roman:"phom mai kee-niaw", script:"ผมไม่ขี้เหนียว", phon:"pom my kee-NEE-ow", words:"phom = I · mai = not · kee-niaw = stingy", cats:["slang","nightlife"] },
+{ en:"Yeah, like that (Isan agreement)", roman:"maen", script:"แมน", phon:"MAN", cats:["slang"], note:"Isan dialect gone mainstream online." },
+
+/* ---------------- HELP & EMERGENCY ---------------- */
+{ en:"Can you help me?", roman:"chuay dai mai?", script:"ช่วยได้ไหม", phon:"CHUAY dy-MY", words:"chuay = help · dai mai = can you?", cats:["help","basics"] },
+{ en:"Call the police!", roman:"riak tamruat!", script:"เรียกตำรวจ", phon:"REE-ak tahm-RUAT!", words:"riak = summon · tamruat = police", cats:["help","police"] },
+{ en:"Call an ambulance!", roman:"riak rot phayaban!", script:"เรียกรถพยาบาล", phon:"REE-ak rot pah-yah-BAHN!", words:"riak = summon · rot = vehicle · phayaban = nursing", cats:["help","sick"], note:"Emergency numbers in Thailand: 1669 (medical), 191 (police)." },
+{ en:"Can you take me to the hospital?", roman:"phaa phom pai rong phayaban dai mai?", script:"พาผมไปโรงพยาบาลได้ไหม", phon:"pah pom py rong-pah-yah-BAHN dy-MY", words:"phaa = lead/take · pai = go · rong phayaban = hospital · dai mai = can?", cats:["help","sick"] },
+{ en:"I'm lost", roman:"phom long thang", script:"ผมหลงทาง", phon:"pom long-TAHNG", words:"phom = I · long = strayed · thang = way/path", cats:["help","basics"] },
+{ en:"My phone is lost / gone", roman:"tho-ra-sap hai", script:"โทรศัพท์หาย", phon:"to-rah-SAHP HY", words:"tho-ra-sap = telephone · hai = lost/vanished", cats:["help"], note:"[thing] + hai = it's lost. Wallet: kra-pao ngern hai." },
+{ en:"Thief! / it was stolen", roman:"kha-moy!", script:"ขโมย", phon:"kah-MOY!", cats:["help","police"] },
+{ en:"Is there an interpreter?", roman:"mee laam mai?", script:"มีล่ามไหม", phon:"mee-LAHM my", words:"mee = have/exist · laam = interpreter · mai = ?", cats:["help","sick","police"], note:"Ask at hospitals and police stations — bigger ones have them." },
+{ en:"Hospital", roman:"rong phayaban", script:"โรงพยาบาล", phon:"rong-pah-yah-BAHN", words:"rong = building · phayaban = nursing/care", cats:["help","sick"] },
+
+/* ---------------- SICK & PHARMACY ---------------- */
+{ en:"I feel unwell", roman:"roo seuk mai khoi sabai", script:"รู้สึกไม่ค่อยสบาย", phon:"roo-SEUK my koy sah-BY", words:"roo seuk = feel · mai khoi = not quite · sabai = well", cats:["sick"] },
+{ en:"I am sick", roman:"phom puay", script:"ผมป่วย", phon:"pom-PUAY", words:"phom = I · puay = ill", cats:["sick"] },
+{ en:"I have a fever", roman:"pen khai", script:"เป็นไข้", phon:"pen-KY", words:"pen = have/be · khai = fever", cats:["sick"] },
+{ en:"I have a cold", roman:"pen wat", script:"เป็นหวัด", phon:"pen-WAHT", words:"pen = have/be · wat = a cold", cats:["sick"] },
+{ en:"Stomach ache", roman:"puat thong", script:"ปวดท้อง", phon:"puat-TONG", words:"puat = ache · thong = stomach", cats:["sick"] },
+{ en:"Headache", roman:"puat hua", script:"ปวดหัว", phon:"puat-HUA", words:"puat = ache · hua = head", cats:["sick","nightlife"], note:"The morning-after vocabulary." },
+{ en:"Sore throat", roman:"jep khor", script:"เจ็บคอ", phon:"jep-KOR", words:"jep = hurt · khor = throat/neck", cats:["sick"] },
+{ en:"Diarrhea", roman:"thong sia", script:"ท้องเสีย", phon:"tong-SEE-ah", words:"thong = stomach · sia = broken/spoiled", cats:["sick"], note:"Street food initiation. The pharmacy knows exactly what you need." },
+{ en:"I have a drug allergy", roman:"phae yaa", script:"แพ้ยา", phon:"pah-YAH", words:"phae = allergic · yaa = medicine", cats:["sick"] },
+{ en:"I have a food allergy", roman:"phae ahan", script:"แพ้อาหาร", phon:"pah ah-HAHN", words:"phae = allergic · ahan = food", cats:["sick","food","restaurant"] },
+{ en:"I'm allergic to nuts", roman:"phae thua", script:"แพ้ถั่ว", phon:"pah-TUA", words:"phae = allergic · thua = nuts/beans", cats:["sick","food"], note:"Shellfish: phae hoy. Eggs: phae khai. Milk: phae nom." },
+{ en:"Pharmacy", roman:"ran khai yaa", script:"ร้านขายยา", phon:"rahn-ky-YAH", words:"ran = shop · khai = sell · yaa = medicine → 'medicine-selling shop'", cats:["sick","help"] },
+{ en:"Medicine", roman:"yaa", script:"ยา", phon:"YAH", cats:["sick"] },
+{ en:"Painkiller, please", roman:"khor yaa gae puat", script:"ขอยาแก้ปวด", phon:"kor yah gaa-PUAT", words:"khor = please give · yaa = medicine · gae = fix/cure · puat = pain", cats:["sick"] },
+{ en:"Doctor", roman:"mor", script:"หมอ", phon:"MOR", cats:["sick","people"] },
+{ en:"I can't sleep", roman:"nawn mai lap", script:"นอนไม่หลับ", phon:"nawn my-LAHP", words:"nawn = lie down · mai = not · lap = fall asleep", cats:["sick"] },
+
+/* ---------------- POLICE & AUTHORITIES ---------------- */
+{ en:"Police", roman:"tamruat", script:"ตำรวจ", phon:"tahm-RUAT", cats:["police","help"] },
+{ en:"Excuse me, officer (respectful)", roman:"khor thot krap, khun tamruat", script:"ขอโทษครับ คุณตำรวจ", phon:"kor-TOTE krap, koon tahm-RUAT", words:"khor thot = excuse me · khun = respectful Mr./Ms. · tamruat = police", cats:["police","sorry"], note:"Lead with khor thot + krap on EVERY sentence. Calm, quiet, respectful." },
+{ en:"I didn't know (about the rule)", roman:"phom mai roo krap", script:"ผมไม่รู้ครับ", phon:"pom my-ROO krap", words:"phom = I · mai = not · roo = know · krap = politeness", cats:["police","sorry"] },
+{ en:"Here you are (handing documents)", roman:"nee krap", script:"นี่ครับ", phon:"nee-KRAP", words:"nee = here/this · krap = politeness", cats:["police","money"] },
+{ en:"I don't understand — is there an interpreter?", roman:"mai khao jai, mee laam mai krap?", script:"ไม่เข้าใจ มีล่ามไหมครับ", phon:"my kow-JY, mee-LAHM my krap", words:"mai khao jai = don't understand · mee = is there · laam = interpreter", cats:["police","help"] },
+{ en:"Thank you very much (extra polite)", roman:"khop khun mak krap", script:"ขอบคุณมากครับ", phon:"kop-KOON MAHK krap", words:"khop khun = thank you · mak = very much · krap = politeness", cats:["police","basics","sorry"] },
+{ en:"Older person (respectful address)", roman:"pii", script:"พี่", phon:"PEE", words:"pii = older sibling — used for any older person", cats:["police","people","taxi","basics"], note:"Address anyone older as pii + krap/ka. Younger: nong. Melts formality." },
+
+/* ---------------- SORRY & DE-ESCALATION ---------------- */
+{ en:"Calm down / cool your heart", roman:"jai yen yen", script:"ใจเย็นๆ", phon:"jy YEN-YEN", words:"jai = heart · yen yen = cool-cool", cats:["sorry","nightlife"], note:"THE de-escalation phrase. A cool heart (jai yen) is the highest Thai virtue; losing your temper loses the argument." },
+{ en:"I'm really sorry", roman:"khor thot jing jing", script:"ขอโทษจริงๆ", phon:"kor-TOTE jing-JING", words:"khor thot = sorry · jing jing = truly-truly", cats:["sorry"] },
+{ en:"Sorry! (casual, small accidents)", roman:"thot tee / khor thot tee", script:"โทษที", phon:"TOTE-tee", words:"thot = blame · tee = softening particle", cats:["sorry","friends"], note:"The friendly oops-sorry between equals." },
+{ en:"It's my fault", roman:"phom phit eng", script:"ผมผิดเอง", phon:"pom PIT eng", words:"phom = I · phit = wrong · eng = myself", cats:["sorry"], note:"Owning it fast defuses almost anything in Thailand." },
+{ en:"I didn't mean it / no bad intent", roman:"mai dai tang jai", script:"ไม่ได้ตั้งใจ", phon:"my dy tahng-JY", words:"mai dai = did not · tang jai = intend (set the heart)", cats:["sorry"] },
+{ en:"No problem at all / all good", roman:"mai mee panha", script:"ไม่มีปัญหา", phon:"my mee pahn-HAH", words:"mai = not · mee = have · panha = problem", cats:["sorry","basics"] },
+{ en:"It just so happens that... (excuse opener)", roman:"por dee waa...", script:"พอดีว่า...", phon:"por-DEE wah", words:"por dee = coincidentally/just so · waa = that...", cats:["sorry","time","friends"], note:"The polite Thai excuse: 'It just so happens I'm busy...'" },
+{ en:"How about another day?", roman:"wan euun dai mai?", script:"วันอื่นได้ไหม", phon:"wahn-EUUN dy-MY", words:"wan = day · euun = other · dai mai = possible?", cats:["sorry","time","friends"], note:"Refusing without refusing — offer next time instead." },
+{ en:"I might not be able to go", roman:"khong pai mai dai", script:"คงไปไม่ได้", phon:"kong py my-DY", words:"khong = probably · pai = go · mai dai = cannot", cats:["sorry","time"], note:"Softer than a flat no. Thais rarely say 'no' directly." },
+{ en:"My condolences / I grieve with you", roman:"sia jai duay", script:"เสียใจด้วย", phon:"see-ah JY duay", words:"sia = lose · jai = heart · duay = along with (you)", cats:["sorry"], note:"For loss and sad news — do NOT use khor thot here." },
+
+/* ---------------- TEMPLES & MUSEUMS ---------------- */
+{ en:"Temple", roman:"wat", script:"วัด", phon:"WAHT", cats:["sights"] },
+{ en:"Monk", roman:"phra", script:"พระ", phon:"PRAH", words:"phra = monk / sacred figure", cats:["sights","people"], note:"Women should never touch a monk or hand things directly to one." },
+{ en:"Museum", roman:"pipit-taphan", script:"พิพิธภัณฑ์", phon:"pi-PIT-tah-PAHN", cats:["sights"] },
+{ en:"The Grand Palace", roman:"phra borom maha ratcha wang", script:"พระบรมมหาราชวัง", phon:"prah bo-rom mah-hah RAHT-chah WAHNG", cats:["sights"], note:"Bangkok's crown jewel. Dress code enforced: covered shoulders + knees." },
+{ en:"Shrine", roman:"saan jao", script:"ศาลเจ้า", phon:"sahn-JOW", cats:["sights"] },
+{ en:"How much is the entrance fee?", roman:"kha khao tao rai?", script:"ค่าเข้าเท่าไหร่", phon:"kah-KOW tao-RY", words:"kha = fee · khao = enter · tao rai = how much", cats:["sights","money"] },
+{ en:"Can I take a photo?", roman:"thai roop dai mai?", script:"ถ่ายรูปได้ไหม", phon:"ty-ROOP dy-MY", words:"thai = take/shoot · roop = picture · dai mai = may I?", cats:["sights","basics"] },
+{ en:"Do I need to take off my shoes?", roman:"tong thot rong thao mai?", script:"ต้องถอดรองเท้าไหม", phon:"tong TOT rong-TAO my", words:"tong = must · thot = remove · rong thao = shoes · mai = ?", cats:["sights"], note:"At temples: always yes. Also many shops and every home." },
+{ en:"So beautiful!", roman:"suay mak!", script:"สวยมาก", phon:"SUAY mahk", words:"suay = beautiful · mak = very", cats:["sights","nature","friends"] },
+{ en:"Ayutthaya (ancient capital)", roman:"ayutthaya", script:"อยุธยา", phon:"ah-YOOT-tah-yah", cats:["sights"], note:"Day trip from Bangkok — temple ruins, UNESCO site." },
+{ en:"I like temples", roman:"chop wat", script:"ชอบวัด", phon:"chop-WAHT", words:"chop = like · wat = temple", cats:["sights","meeting"], note:"Straight from the first-conversation episode — easy small talk." },
+
+/* ---------------- NATURE & ACTIVITIES ---------------- */
+{ en:"Beach", roman:"chai hat", script:"ชายหาด", phon:"chy-HAHT", words:"chai = edge · hat = sand", cats:["nature"] },
+{ en:"Island", roman:"koh", script:"เกาะ", phon:"GAW", cats:["nature"], note:"Koh Samet, Koh Samui, Koh Phangan — now you know what koh means." },
+{ en:"Sea / ocean", roman:"thale", script:"ทะเล", phon:"tah-LAY", cats:["nature"] },
+{ en:"Mountain", roman:"phukhao", script:"ภูเขา", phon:"poo-KOW", cats:["nature"] },
+{ en:"Waterfall", roman:"nam tok", script:"น้ำตก", phon:"nahm-TOK", words:"nam = water · tok = to fall", cats:["nature"], note:"Also a delicious grilled-meat salad. Context matters!" },
+{ en:"River", roman:"mae nam", script:"แม่น้ำ", phon:"maa-NAHM", words:"mae = mother · nam = water → 'mother of waters'", cats:["nature"], note:"Literally 'mother of waters'." },
+{ en:"Garden / park", roman:"suan", script:"สวน", phon:"SUAN", cats:["nature"] },
+{ en:"Tree", roman:"ton mai", script:"ต้นไม้", phon:"ton-MY", words:"ton = trunk/stem · mai = wood", cats:["nature"] },
+{ en:"To hike / trek", roman:"dern paa", script:"เดินป่า", phon:"dern-PAH", words:"dern = walk · paa = forest", cats:["nature"], note:"Literally 'walk the forest'." },
+{ en:"National park", roman:"utthayan haeng chat", script:"อุทยานแห่งชาติ", phon:"oot-tah-YAHN hang CHAHT", words:"utthayan = park · haeng chat = of the nation", cats:["nature"], note:"Khao Yai = the big famous one near Bangkok." },
+{ en:"To swim", roman:"wai nam", script:"ว่ายน้ำ", phon:"wy-NAHM", words:"wai = swim · nam = water", cats:["nature"] },
+{ en:"Muay Thai", roman:"muay thai", script:"มวยไทย", phon:"muay-TY", cats:["nature","nightlife"], note:"Catch a fight night — even the small stadiums are electric." },
+{ en:"Go traveling / go out for fun", roman:"pai thiao", script:"ไปเที่ยว", phon:"py-TEE-ow", words:"pai = go · thiao = out for fun/travel", cats:["nature","friends","nightlife"], note:"Covers everything from sightseeing to a night out." },
+{ en:"The weather is nice", roman:"aa-gaat dee", script:"อากาศดี", phon:"ah-GAHT dee", words:"aa-gaat = air/weather · dee = good", cats:["nature","basics"] },
+
+/* ---------------- PEOPLE & FAMILY ---------------- */
+{ en:"Person / people", roman:"khon", script:"คน", phon:"KON", cats:["people"] },
+{ en:"Thai person / Thai people", roman:"khon thai", script:"คนไทย", phon:"kon-TY", words:"khon = person · thai = Thai", cats:["people","meeting"] },
+{ en:"Foreigner (Westerner)", roman:"farang", script:"ฝรั่ง", phon:"fah-RAHNG", cats:["people","slang","nightlife"], note:"That's you. Not an insult — also the word for guava." },
+{ en:"Woman", roman:"phuu-ying", script:"ผู้หญิง", phon:"poo-YING", cats:["people"] },
+{ en:"Man", roman:"phuu-chai", script:"ผู้ชาย", phon:"poo-CHY", cats:["people"] },
+{ en:"Child / kid", roman:"dek", script:"เด็ก", phon:"DEK", cats:["people"] },
+{ en:"Mom", roman:"mae", script:"แม่", phon:"MAA", cats:["people"] },
+{ en:"Dad", roman:"phor", script:"พ่อ", phon:"POR", cats:["people"] },
+{ en:"Grandma (maternal)", roman:"yaai", script:"ยาย", phon:"YY", words:"yaai = mother's mother", cats:["people"], note:"A-mah = Chinese-Thai grandma, as in the Grandma movie." },
+{ en:"Older sibling (address anyone older)", roman:"pii", script:"พี่", phon:"PEE", cats:["people","basics"], note:"Pii + name, or just 'pii krap!' to flag a waiter politely." },
+{ en:"Younger sibling (address anyone younger)", roman:"nong", script:"น้อง", phon:"NONG", cats:["people","taxi","restaurant"], note:"'Nong krap!' is how you call young staff — friendly, normal." },
+{ en:"We / us", roman:"rao", script:"เรา", phon:"ROW", cats:["people"] },
+{ en:"Happiness", roman:"khwam-suk", script:"ความสุข", phon:"kwahm-SOOK", words:"khwam- = -ness (makes nouns) · suk = happy", cats:["people","slang"] },
+{ en:"Lonely", roman:"ngao", script:"เหงา", phon:"NGOW", cats:["people","slang"] }
+];
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
 const $ = id => document.getElementById(id);
-const card = $("card");
 
-function activeCards() {
-  const d = DECKS[deckKey];
-  return d.cards.filter(c => filter === "all" || c.type === filter);
+// stable id per card
+CARDS.forEach(c => c.id = c.script + "|" + c.en.slice(0, 24));
+
+// persisted learned set (works on GitHub Pages; safely session-only elsewhere)
+let learnedSet = new Set();
+function loadLearned() {
+  try {
+    const raw = localStorage.getItem("learnThai.learned");
+    if (raw) learnedSet = new Set(JSON.parse(raw));
+  } catch (e) { /* storage unavailable */ }
+}
+function saveLearned() {
+  try { localStorage.setItem("learnThai.learned", JSON.stringify([...learnedSet])); }
+  catch (e) { /* ignore */ }
 }
 
+function cardsFor(catKey) {
+  return catKey === "all" ? CARDS : CARDS.filter(c => c.cats.includes(catKey));
+}
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -412,116 +922,448 @@ function shuffle(a) {
   return a;
 }
 
-function startSession() {
-  const cards = activeCards();
-  total = cards.length;
-  learned = 0;
-  queue = shuffle(cards.map((_, i) => i));
+/* ---------------- home ---------------- */
+function renderHome() {
+  $("homeStat").textContent = learnedSet.size + " / " + CARDS.length;
+  $("allCount").innerHTML = "<b>" + learnedSet.size + "</b> / " + CARDS.length + " learned";
+  const grid = $("catGrid");
+  grid.innerHTML = "";
+  Object.entries(CATEGORIES).forEach(([key, cat]) => {
+    const cards = cardsFor(key);
+    const learned = cards.filter(c => learnedSet.has(c.id)).length;
+    const tile = document.createElement("button");
+    tile.className = "tile" + (cards.length && learned === cards.length ? " done-tile" : "");
+    tile.innerHTML =
+      '<span class="t-emoji">' + cat.emoji + '</span>' +
+      '<span class="t-name">' + cat.name + '</span>' +
+      '<span class="t-count"><b>' + learned + '</b> / ' + cards.length + '</span>';
+    tile.addEventListener("click", () => openDeck(key));
+    grid.appendChild(tile);
+  });
+
+  // Phrasebook rows — one tap, read the category like a book
+  const mkRow = (emoji, label, sub, count, onTap, gold) => {
+    const b = document.createElement("button");
+    b.className = "row-btn" + (gold ? " gold-row" : "");
+    b.innerHTML = '<span class="r-emoji">' + emoji + '</span><span>' + label +
+      (sub ? '<span class="r-sub">' + sub + '</span>' : '') + '</span>' +
+      (count ? '<span class="r-count">' + count + '</span>' : '');
+    b.addEventListener("click", onTap);
+    return b;
+  };
+  const book = $("bookList");
+  book.innerHTML = "";
+  book.appendChild(mkRow("🇹🇭", "Complete Phrasebook", "every chapter, front to back", CARDS.length + " cards", () => openListFromHome("all"), true));
+  Object.entries(CATEGORIES).forEach(([key, cat]) => {
+    book.appendChild(mkRow(cat.emoji, cat.name, "", cardsFor(key).length + "", () => openListFromHome(key)));
+  });
+
+  // Scenario rows — role-play dialogues
+  const scen = $("scenarioList");
+  scen.innerHTML = "";
+  Object.entries(SCENARIOS).forEach(([key, s]) => {
+    scen.appendChild(mkRow(s.emoji, s.name, s.sub, "", () => renderScenario(key)));
+  });
+
+  // Reference list rows — the deep tables
+  const ref = $("refList");
+  ref.innerHTML = "";
+  Object.entries(REFS).forEach(([key, r]) => {
+    ref.appendChild(mkRow(r.emoji, r.name, r.sub, "", () => renderRef(key)));
+  });
+}
+
+/* ---------------- study ---------------- */
+let currentCat = null;
+let queue = [];
+let sessionTotal = 0;
+let reversed = false;
+const card = $("card");
+
+function openDeck(catKey) {
+  currentCat = catKey;
+  const catName = catKey === "all" ? "All Cards" : CATEGORIES[catKey].name;
+  const parts = catName.split(" ");
+  $("deckTitle").innerHTML = parts[0] + " <span>" + parts.slice(1).join(" ") + "</span>";
+  $("home").style.display = "none";
+  $("study").style.display = "flex";
+  startSession(false);
+}
+
+function startSession(resetLearned) {
+  const all = cardsFor(currentCat);
+  if (resetLearned) {
+    all.forEach(c => learnedSet.delete(c.id));
+    saveLearned();
+  }
+  queue = shuffle(all.filter(c => !learnedSet.has(c.id)));
+  sessionTotal = all.length;
+  if (queue.length === 0 && all.length > 0) { finishDeck(); updateProgress(); return; }
   $("doneScreen").style.display = "none";
   card.style.display = "";
   $("controls").style.visibility = "visible";
-  showCurrent(false);
+  showCurrent();
   updateProgress();
 }
 
-function showCurrent(animate = true) {
+function showCurrent() {
   card.classList.remove("flipped");
-  const cards = activeCards();
-  const c = cards[queue[0]];
+  const c = queue[0];
   if (!c) return;
-  const d = DECKS[deckKey];
-  const scriptEl = $("cScript");
-  scriptEl.className = "script " + d.fontClass;
-
   if (!reversed) {
-    $("frontTag").textContent = d.tag;
+    $("frontTag").textContent = "Thai";
     $("backTag").textContent = "English";
-    scriptEl.textContent = c.script;
+    $("cScript").textContent = c.script;
     $("cRoman").textContent = c.roman;
     $("cPhon").textContent = c.phon;
     $("cEnglish").textContent = c.en;
+    $("cWords").textContent = c.words ? "🧩 " + c.words : "";
+    $("cNote").textContent = c.note || "";
   } else {
     $("frontTag").textContent = "English";
-    $("backTag").textContent = d.tag;
-    scriptEl.textContent = "";
+    $("backTag").textContent = "Thai";
+    $("cScript").textContent = "";
     $("cRoman").textContent = c.en;
     $("cPhon").textContent = "";
     $("cEnglish").innerHTML =
-      '<span class="script ' + d.fontClass + '" style="display:block;font-size:0.95em;color:var(--gold)">' +
-      c.script + '</span>' + c.roman + '<div class="phon" style="margin-top:10px">' + c.phon + '</div>';
+      '<span class="script thai" style="display:block;font-size:1.05em;color:var(--gold);margin-bottom:6px">' + c.script + '</span>' +
+      '<span style="font-size:0.75em">' + c.roman + '</span>' +
+      '<div class="phon" style="margin-top:10px;font-size:0.55em">' + c.phon + '</div>';
+    $("cWords").textContent = c.words ? "🧩 " + c.words : "";
+    $("cNote").textContent = c.note || "";
   }
 }
 
 function updateProgress() {
+  const learned = sessionTotal - queue.length;
   $("learnedCount").textContent = learned;
   $("remainCount").textContent = queue.length;
-  $("progressFill").style.width = total ? (learned / total * 100) + "%" : "0%";
+  $("progressFill").style.width = sessionTotal ? (learned / sessionTotal * 100) + "%" : "0%";
 }
 
 function finishDeck() {
-  const d = DECKS[deckKey];
   card.style.display = "none";
   $("controls").style.visibility = "hidden";
-  const done = $("doneScreen");
-  done.querySelector(".script").textContent = d.doneWord;
-  done.querySelector(".script").className = "script " + d.fontClass;
-  done.querySelector("p").innerHTML = d.doneRoman + "<br>Every card marked as learned.";
-  done.style.display = "flex";
+  $("doneScreen").style.display = "flex";
 }
+
+/* ---------------- list view ---------------- */
+const ND = ["suun","neung","saawng","saam","sii","haa","hok","jet","bpaet","gao"];
+const NT = ["ศูนย์","หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า"];
+const TDG = ["๐","๑","๒","๓","๔","๕","๖","๗","๘","๙"];
+const tdg = n => String(n).split("").map(d => TDG[+d]).join("");
+
+// Thai number words for 0–100 (handles sip-ET and YII-sip irregularities)
+function numWord(n) {
+  if (n === 0) return { r:"suun", t:"ศูนย์" };
+  if (n === 100) return { r:"neung roi", t:"หนึ่งร้อย" };
+  const tens = Math.floor(n / 10), ones = n % 10;
+  let r = "", t = "";
+  if (tens === 1) { r = "sip"; t = "สิบ"; }
+  else if (tens === 2) { r = "yii-sip"; t = "ยี่สิบ"; }
+  else if (tens >= 3) { r = ND[tens] + "-sip"; t = NT[tens] + "สิบ"; }
+  if (ones) {
+    if (tens && ones === 1) { r += "-et"; t += "เอ็ด"; }
+    else { r += (r ? "-" : "") + ND[ones]; t += NT[ones]; }
+  }
+  return { r, t };
+}
+
+const numLine = (a, d, t, r) =>
+  '<div class="numline"><span class="n-a">' + a + '</span><span class="n-d thai">' + d +
+  '</span><span class="n-t thai">' + t + '</span><span class="n-r">' + r + '</span></div>';
+const lsec = (title, sub) =>
+  '<div class="lsec">' + title + '</div>' + (sub ? '<div class="lsub">' + sub + '</div>' : '');
+const nbox = inner => '<div class="numbox">' + inner + '</div>';
+
+function refCore() {
+  let h = "", b = "";
+
+  h += lsec("Building blocks: 0–10", "The whole system is these eleven pieces snapped together like Lego.");
+  b = "";
+  for (let i = 0; i <= 9; i++) b += numLine(i, tdg(i), NT[i], ND[i]);
+  b += numLine(10, tdg(10), "สิบ", "sip");
+  h += nbox(b);
+
+  h += lsec("11 – 20", "Teens = sip + digit. Two traps: 11 ends in ET (not neung), and 20 is YII-sip (not saawng-sip).");
+  b = "";
+  for (let i = 11; i <= 20; i++) { const w = numWord(i); b += numLine(i, tdg(i), w.t, w.r); }
+  h += nbox(b);
+
+  h += lsec("Tens: 10 – 90", "digit + sip. Only 20 breaks the pattern.");
+  b = "";
+  for (let i = 10; i <= 90; i += 10) { const w = numWord(i); b += numLine(i, tdg(i), w.t, w.r); }
+  h += nbox(b);
+  return h;
+}
+
+function refThousands() {
+  let h = "", b = "";
+  h += lsec("Hundreds", "digit + roi.");
+  b = "";
+  for (let i = 1; i <= 9; i++) b += numLine(i * 100, tdg(i * 100), NT[i] + "ร้อย", ND[i] + "-roi");
+  h += nbox(b);
+
+  h += lsec("Thousands & the big leagues", "digit + phan. Past that, each new size gets its own word — no 'ten thousand', just meun.");
+  b = "";
+  for (let i = 1; i <= 9; i++) b += numLine(i * 1000, tdg(i * 1000), NT[i] + "พัน", ND[i] + "-phan");
+  b += numLine("10,000", tdg(10000), "หมื่น", "meun");
+  b += numLine("100,000", tdg(100000), "แสน", "saen");
+  b += numLine("1 million", "", "ล้าน", "laan");
+  h += nbox(b);
+  h += '<div class="lsub">Grandma-movie flex: 10 million = sip laan. Combine like Lego: 16,000 = neung meun hok phan.</div>';
+  return h;
+}
+
+function refFullRun() {
+  let h = "", b = "";
+  h += lsec("The full run: 1 – 100", "Every single one. Read ten a day, out loud, on the toilet, whatever — redundancy is the point.");
+  b = "";
+  for (let i = 1; i <= 100; i++) { const w = numWord(i); b += numLine(i, tdg(i), w.t, w.r); }
+  h += nbox(b);
+  return h;
+}
+
+function refBaht() {
+  let h = "", b = "";
+  h += lsec("Baht in your pocket", "The exact coins and notes you'll handle, with the colors you'll spot in your wallet.");
+  b = "";
+  b += numLine("฿1", tdg(1), "หนึ่งบาท", "neung baht · small silver coin");
+  b += numLine("฿2", tdg(2), "สองบาท", "saawng baht · gold-tone coin");
+  b += numLine("฿5", tdg(5), "ห้าบาท", "haa baht · chunky silver coin");
+  b += numLine("฿10", tdg(10), "สิบบาท", "sip baht · two-tone coin");
+  b += numLine("฿20", tdg(20), "ยี่สิบบาท", "yii-sip baht · GREEN note");
+  b += numLine("฿50", tdg(50), "ห้าสิบบาท", "haa-sip baht · BLUE note");
+  b += numLine("฿100", tdg(100), "หนึ่งร้อยบาท", "neung roi baht · RED note");
+  b += numLine("฿500", tdg(500), "ห้าร้อยบาท", "haa roi baht · PURPLE note");
+  b += numLine("฿1,000", tdg(1000), "หนึ่งพันบาท", "neung phan baht · GREY-BROWN note");
+  h += nbox(b);
+  h += '<div class="lsub">Street reality: the ฿1,000 is the awkward note — break it at 7-Eleven, not the noodle cart. Remember your card: khor baeng yoi = small bills, please.</div>';
+  return h;
+}
+
+function refTime() {
+  let h = "", b = "";
+  h += lsec("Telling time", "Thai runs a 6-hour clock: the day splits into four chunks, each with its own word, and the count restarts. Feels alien for a week, then it clicks like a combination lock.");
+  b = "";
+  b += numLine("1 AM", "ตี", "ตีหนึ่ง", "dtee neung");
+  b += numLine("3 AM", "ตี", "ตีสาม", "dtee saam · dtee covers 1–5 AM");
+  b += numLine("6 AM", "เช้า", "หกโมงเช้า", "hok mong chao");
+  b += numLine("9 AM", "เช้า", "เก้าโมงเช้า", "gao mong chao · morning hours");
+  b += numLine("Noon", "เที่ยง", "เที่ยง", "thiang");
+  b += numLine("1 PM", "บ่าย", "บ่ายโมง", "bai mong");
+  b += numLine("3 PM", "บ่าย", "บ่ายสามโมง", "bai saam mong · bai = afternoon");
+  b += numLine("5 PM", "เย็น", "ห้าโมงเย็น", "haa mong yen");
+  b += numLine("6 PM", "เย็น", "หกโมงเย็น", "hok mong yen · yen = evening");
+  b += numLine("7 PM", "ทุ่ม", "หนึ่งทุ่ม", "neung thum · night restarts at 1!");
+  b += numLine("9 PM", "ทุ่ม", "สามทุ่ม", "saam thum · classic bar-meetup time");
+  b += numLine("11 PM", "ทุ่ม", "ห้าทุ่ม", "haa thum");
+  b += numLine("Midnight", "เที่ยงคืน", "เที่ยงคืน", "thiang kheun");
+  b += numLine("Half past", "ครึ่ง", "...ครึ่ง", "khreung · 9:30 AM = gao mong khreung");
+  b += numLine("Minutes", "นาที", "นาที", "naa-thee · 9:15 = gao mong sip-haa naa-thee");
+  h += nbox(b);
+  h += '<div class="lsub">Escape hatch: official 24-hour time uses naliga (นาฬิกา) — airports, train tickets, TV. 15:00 = sip-haa naliga. When the 6-hour clock melts your brain, naliga always works.</div>';
+  return h;
+}
+
+function refWild() {
+  let h = "", b = "";
+  h += lsec("Numbers in the wild", "How digits actually show up on streets, boarding passes, and hotel doors.");
+  b = "";
+  b += numLine("Soi 11", "ซอย", "ซอยสิบเอ็ด", "soi sip-et · soi = side street off a main road");
+  b += numLine("Street", "ถนน", "ถนนสุขุมวิท", "thanon = road · Thanon Sukhumvit");
+  b += numLine("12/4", "ทับ", "สิบสองทับสี่", "sip-saawng THAP sii · thap = the address slash");
+  b += numLine("Gate 42", "ประตู", "ประตูสี่สิบสอง", "pratuu sii-sip-saawng · or just say 'gate'");
+  b += numLine("TG 315", "เที่ยวบิน", "สาม-หนึ่ง-ห้า", "flight numbers go digit by digit: saam-neung-haa");
+  b += numLine("Bus 511", "รถเมล์", "ห้าร้อยสิบเอ็ด", "rot me haa-roi-sip-et · buses read as full numbers");
+  b += numLine("Floor 3", "ชั้น", "ชั้นสาม", "chan saam · chan = floor/level");
+  b += numLine("Room 214", "ห้อง", "สอง-หนึ่ง-สี่", "hong = room · usually digit by digit");
+  b += numLine("Phone #", "เบอร์", "เบอร์โทร", "ber toh · always digit by digit, 0 = suun");
+  h += nbox(b);
+  return h;
+}
+
+function numbersReference() {
+  return refCore() + refThousands() + refFullRun() + refBaht() + refTime() + refWild();
+}
+
+/* top-level reference list pages */
+/* top-level reference list pages */
+const REFS = {
+  numsys:  { emoji:"🔢", name:"Number System", sub:"0–10 · teens · tens · hundreds · thousands", fn: () => refCore() + refThousands() },
+  fullrun: { emoji:"💯", name:"Every Number 1–100", sub:"all of them, four forms each", fn: refFullRun },
+  baht:    { emoji:"💵", name:"Baht Money", sub:"the notes & coins in your pocket", fn: refBaht },
+  time:    { emoji:"🕐", name:"Telling Time", sub:"the Thai 6-hour clock, decoded", fn: refTime },
+  wild:    { emoji:"📍", name:"Numbers in the Wild", sub:"sois · addresses · gates · flights", fn: refWild }
+};
+
+/* =====================================================================
+   SCENARIOS — full role-play dialogues, line by line.
+   ADDING A SCENARIO: follow the shape below. who: "them" | "you".
+   ===================================================================== */
+const SCENARIOS = {
+  cafe: {
+    emoji: "☕",
+    name: "Cafe: Ordering Coffee",
+    sub: "hot or iced · for here or to go · card or cash",
+    intro: "Two complete exchanges at the counter, from the You Too Can Talk Thai role-play. Read both with the breakdowns, then cover the English and run your lines out loud. The barista's questions never change — only your answers do.",
+    parts: [
+      { title: "Dialogue 1 — Hot latte, large, no sugar, for here, paying by card", lines: [
+        { who:"them", script:"สวัสดีครับ รับอะไรดีครับ", roman:"sawatdee krap, rap arai dee krap?", phon:"sah-wah-DEE krap, rap ah-RY DEE krap", en:"Hello, what would you like?", words:"rap = receive/take · arai = what · dee = good" },
+        { who:"you", script:"สวัสดีครับ เอาลาเต้ร้อน 1 แก้วครับ", roman:"sawatdee krap, ao latte rorn neung kaew krap", phon:"sah-wah-DEE krap, ow lah-TAY RAWN neung GAO krap", en:"Hello, I'll take one hot latte.", words:"ao = I'll take · rorn = hot · neung = one · kaew = glass/cup" },
+        { who:"them", script:"ไซส์ไหนดีครับ", roman:"size nai dee krap?", phon:"size NY dee krap", en:"Which size would you like?", words:"nai = which · dee = good" },
+        { who:"you", script:"ไซส์ใหญ่ครับ", roman:"size yai krap", phon:"size YY krap", en:"Large size.", words:"yai = big" },
+        { who:"them", script:"หวานปกติมั้ยครับ", roman:"wan pokati mai krap?", phon:"wahn bpo-gah-DTEE my krap", en:"Normal sweetness?", words:"wan = sweet · pokati = normal · mai = yes/no?" },
+        { who:"you", script:"เอ่อ ไม่หวานครับ", roman:"er, mai wan krap", phon:"er, my WAHN krap", en:"Uh, not sweet (no sugar).", words:"mai = not · wan = sweet" },
+        { who:"them", script:"กินที่นี่หรือกลับบ้านครับ", roman:"gin tee nee reu glub baan krap?", phon:"gin tee-NEE reu glup-BAHN krap", en:"For here or to go?", words:"gin = eat/drink · tee nee = here · reu = or · glub baan = return home" },
+        { who:"you", script:"อ้อ กินที่นี่ครับ", roman:"or, gin tee nee krap", phon:"aw, gin tee-NEE krap", en:"Oh, for here.", words:"gin = drink · tee nee = (at) here" },
+        { who:"them", script:"ทั้งหมด 80 บาทครับ", roman:"tang mod bpaet-sip baht krap", phon:"tahng-MOT bpat-sip BAHT krap", en:"That's 80 baht in total.", words:"tang mod = all together · bpaet-sip = eighty" },
+        { who:"you", script:"จ่ายบัตรครับ", roman:"jai bat krap", phon:"jy BAHT krap", en:"Paying by card.", words:"jai = pay · bat = card" },
+        { who:"them", script:"ได้ครับ ขอบคุณครับ", roman:"dai krap, khop khun krap", phon:"dy krap, kop-KOON krap", en:"Sure, thank you.", words:"dai = can/got it · khop khun = thank you" }
+      ]},
+      { title: "Dialogue 2 — Iced Thai tea, small, less sweet, to go, paying cash", lines: [
+        { who:"them", script:"สวัสดีครับ รับอะไรดีครับ", roman:"sawatdee krap, rap arai dee krap?", phon:"sah-wah-DEE krap, rap ah-RY DEE krap", en:"Hello, what would you like?", words:"rap = take · arai = what · dee = good" },
+        { who:"you", script:"สวัสดีครับ เอาชาไทยเย็น 1 แก้วครับ", roman:"sawatdee krap, ao cha thai yen neung kaew krap", phon:"sah-wah-DEE krap, ow chah-TY YEN neung GAO krap", en:"Hello, I'll take one iced Thai tea.", words:"ao = take · cha = tea · yen = iced · neung kaew = one glass" },
+        { who:"them", script:"ไซส์ไหนดีครับ", roman:"size nai dee krap?", phon:"size NY dee krap", en:"Which size?", words:"nai = which" },
+        { who:"you", script:"ไซส์เล็กครับ", roman:"size lek krap", phon:"size LEK krap", en:"Small size.", words:"lek = small" },
+        { who:"them", script:"หวานปกติมั้ยครับ", roman:"wan pokati mai krap?", phon:"wahn bpo-gah-DTEE my krap", en:"Normal sweetness?", words:"wan = sweet · pokati = normal" },
+        { who:"you", script:"หวานน้อยครับ", roman:"wan noi krap", phon:"wahn NOY krap", en:"Less sweet.", words:"wan = sweet · noi = little" },
+        { who:"them", script:"กินที่นี่หรือกลับบ้านครับ", roman:"gin tee nee reu glub baan krap?", phon:"gin tee-NEE reu glup-BAHN krap", en:"For here or to go?", words:"gin tee nee = drink here · reu = or · glub baan = to go" },
+        { who:"you", script:"กลับบ้านครับ", roman:"glub baan krap", phon:"glup-BAHN krap", en:"To go.", words:"glub = return · baan = home" },
+        { who:"them", script:"ทั้งหมด 80 บาทครับ", roman:"tang mod bpaet-sip baht krap", phon:"tahng-MOT bpat-sip BAHT krap", en:"80 baht total.", words:"tang mod = all together" },
+        { who:"you", script:"เงินสดครับ", roman:"ngern sod krap", phon:"ngern-SOT krap", en:"Cash.", words:"ngern = money · sod = fresh → cash" },
+        { who:"them", script:"ได้ครับ ขอบคุณครับ", roman:"dai krap, khop khun krap", phon:"dy krap, kop-KOON krap", en:"Sure, thank you.", words:"dai = got it · khop khun = thanks" }
+      ]}
+    ],
+    outro: "Your turn — build your own order from the pieces: ao + [drink] + [rorn/yen] + neung kaew krap → size [yai/lek] krap → [wan noi / mai wan] krap → [gin tee nee / glub baan] krap → [jai bat / ngern sod] krap. Say it in the shower until it's automatic."
+  }
+};
+
+function renderScenario(key) {
+  const s = SCENARIOS[key];
+  const parts = s.name.split(" ");
+  $("listTitle").innerHTML = parts[0] + " <span>" + parts.slice(1).join(" ") + "</span>";
+  let h = '<div class="lsub" style="margin-top:6px">' + s.intro + '</div>';
+  s.parts.forEach(p => {
+    h += lsec(p.title, "");
+    p.lines.forEach(l => {
+      h += '<div class="bub ' + (l.who === "you" ? "you" : "them") + '">' +
+           '<div class="b-who">' + (l.who === "you" ? "🧍 You" : "🧑‍🍳 Barista") + '</div>' +
+           '<div class="b-script thai">' + l.script + '</div>' +
+           '<div class="b-roman">' + l.roman + '</div>' +
+           '<div class="b-phon">🔊 ' + l.phon + '</div>' +
+           '<div class="b-en">' + l.en + '</div>' +
+           (l.words ? '<div class="b-words">🧩 ' + l.words + '</div>' : '') +
+           '</div>';
+    });
+  });
+  if (s.outro) h += lsec("Practice", "") + '<div class="lsub">' + s.outro + '</div>';
+  $("listContent").innerHTML = h;
+  listReturn = "home";
+  showListScreen();
+}
+
+let listReturn = "study"; // where the list back-button goes
+
+function showListScreen() {
+  $("home").style.display = "none";
+  $("study").style.display = "none";
+  $("list").style.display = "block";
+  $("list").scrollTop = 0;
+}
+
+const rowFor = c =>
+  '<div class="lrow"><div class="l-script thai">' + c.script + '</div>' +
+  '<div class="l-roman">' + c.roman + '</div>' +
+  '<div class="l-phon">🔊 ' + c.phon + '</div>' +
+  '<div class="l-en">' + c.en + '</div>' +
+  (c.words ? '<div class="l-words">🧩 ' + c.words + '</div>' : '') +
+  (c.note ? '<div class="l-note">' + c.note + '</div>' : '') + '</div>';
+
+function renderListView() {
+  const catName = currentCat === "all" ? "Complete Phrasebook" : CATEGORIES[currentCat].name;
+  const parts = catName.split(" ");
+  $("listTitle").innerHTML = parts[0] + " <span>" + parts.slice(1).join(" ") + "</span>";
+  let h;
+  if (currentCat === "all") {
+    // The whole book, chapter by chapter. Cards appear in every chapter they
+    // belong to — the repetition IS the curriculum.
+    h = '<div class="lsub" style="margin-top:6px">Every chapter, front to back. Cards repeat across chapters on purpose — meeting "mai phet" in Market, Restaurant AND Basics is how it sticks.</div>';
+    Object.entries(CATEGORIES).forEach(([key, cat]) => {
+      const cards = cardsFor(key);
+      h += lsec(cat.emoji + " " + cat.name, cards.length + " cards");
+      cards.forEach(c => { h += rowFor(c); });
+    });
+  } else {
+    const cards = cardsFor(currentCat);
+    h = '<div class="lsub" style="margin-top:6px">' + cards.length +
+        ' cards — read top to bottom, then go flip them.</div>';
+    cards.forEach(c => { h += rowFor(c); });
+    if (currentCat === "numbers") h += numbersReference();
+  }
+  $("listContent").innerHTML = h;
+  showListScreen();
+}
+
+function openList() {                 // from inside a study session (☰)
+  listReturn = "study";
+  renderListView();
+}
+function openListFromHome(catKey) {   // from the Phrasebook section on home
+  currentCat = catKey;
+  listReturn = "home";
+  renderListView();
+}
+function renderRef(refKey) {          // from the Reference lists section on home
+  const r = REFS[refKey];
+  const parts = r.name.split(" ");
+  $("listTitle").innerHTML = parts[0] + " <span>" + parts.slice(1).join(" ") + "</span>";
+  $("listContent").innerHTML = r.fn();
+  listReturn = "home";
+  showListScreen();
+}
+
+$("listBtn").addEventListener("click", openList);
+$("listBackBtn").addEventListener("click", () => {
+  $("list").style.display = "none";
+  if (listReturn === "home") {
+    $("home").style.display = "block";
+    renderHome();
+  } else {
+    $("study").style.display = "flex";
+  }
+});
 
 /* ---------------- events ---------------- */
 card.addEventListener("click", () => card.classList.toggle("flipped"));
 
 $("gotBtn").addEventListener("click", () => {
   if (!queue.length) return;
-  queue.shift();
-  learned++;
+  const c = queue.shift();
+  learnedSet.add(c.id);
+  saveLearned();
   updateProgress();
   queue.length ? showCurrent() : finishDeck();
 });
 
 $("againBtn").addEventListener("click", () => {
   if (queue.length < 2) { showCurrent(); return; }
-  queue.push(queue.shift());   // send to back of the line
+  queue.push(queue.shift());
   showCurrent();
 });
 
 $("shuffleBtn").addEventListener("click", () => { shuffle(queue); showCurrent(); });
-$("restartBtn").addEventListener("click", startSession);
 $("dirBtn").addEventListener("click", () => { reversed = !reversed; showCurrent(); });
-
-document.querySelectorAll("#filterChips .chip").forEach(chip => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll("#filterChips .chip").forEach(c => c.classList.remove("active"));
-    chip.classList.add("active");
-    filter = chip.dataset.filter;
-    startSession();
-  });
+$("restartBtn").addEventListener("click", () => startSession(true));
+$("backBtn").addEventListener("click", () => {
+  $("study").style.display = "none";
+  $("home").style.display = "block";
+  renderHome();
 });
+$("allTile").addEventListener("click", () => openDeck("all"));
 
-function buildDeckChips() {
-  const wrap = $("deckChips");
-  wrap.innerHTML = "";
-  const keys = Object.keys(DECKS);
-  if (keys.length < 2) { wrap.style.display = "none"; return; }
-  wrap.style.display = "";
-  keys.forEach(k => {
-    const b = document.createElement("button");
-    b.className = "chip" + (k === deckKey ? " active" : "");
-    b.textContent = DECKS[k].label;
-    b.addEventListener("click", () => {
-      deckKey = k;
-      const parts = DECKS[k].label.split(" ");
-      $("deckTitle").innerHTML = parts[0] + ' <span>' + parts.slice(1).join(" ") + '</span>';
-      buildDeckChips();
-      startSession();
-    });
-    wrap.appendChild(b);
-  });
-}
-
-buildDeckChips();
-startSession();
+loadLearned();
+renderHome();
 </script>
 </body>
 </html>
